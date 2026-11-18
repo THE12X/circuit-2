@@ -1,0 +1,1879 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Circuits Analysis Master Reference — Chapters 1 & 2 (Pages 1–100)</title>
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Google Fonts: Inter & JetBrains Mono -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <!-- MathJax for crisp equation rendering -->
+  <script>
+    window.MathJax = {
+      tex: {
+        inlineMath: [['$', '$'], ['\\(', '\\)']],
+        displayMath: [['$$', '$$'], ['\\[', '\\]']]
+      },
+      svg: { fontCache: 'global' }
+    };
+  </script>
+  <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.js"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['Inter', 'sans-serif'],
+            mono: ['JetBrains Mono', 'monospace']
+          },
+          colors: {
+            obsidian: '#0E0C0F',
+            surface: '#141418',
+            surfaceHover: '#1C1C22',
+            limeAccent: '#D7FF00',
+            cloudGray: '#F3F4F6'
+          }
+        }
+      }
+    };
+  </script>
+  <style>
+    /* Custom Scrollbar & Theme Transitions */
+    html { scroll-behavior: smooth; }
+    body { transition: background-color 0.2s ease, color 0.2s ease; }
+    ::-webkit-scrollbar { width: 8px; height: 8px; }
+    .dark ::-webkit-scrollbar-track { background: #0E0C0F; }
+    .dark ::-webkit-scrollbar-thumb { background: #27272A; border-radius: 9999px; }
+    .dark ::-webkit-scrollbar-thumb:hover { background: #D7FF00; }
+    ::-webkit-scrollbar-track { background: #E5E7EB; }
+    ::-webkit-scrollbar-thumb { background: #9CA3AF; border-radius: 9999px; }
+
+    /* SVG schematic theme adaptation */
+    .schematic-svg text {
+      font-family: 'JetBrains Mono', monospace;
+      user-select: none;
+    }
+    .dark .schematic-stroke { stroke: #E4E4E7; }
+    .schematic-stroke { stroke: #18181B; }
+    .dark .schematic-text { fill: #E4E4E7; }
+    .schematic-text { fill: #18181B; }
+    .dark .schematic-accent { stroke: #D7FF00; }
+    .schematic-accent { stroke: #15803D; }
+    .dark .schematic-accent-fill { fill: #D7FF00; }
+    .schematic-accent-fill { fill: #15803D; }
+
+    /* Custom Range Slider */
+    input[type="range"] {
+      -webkit-appearance: none;
+      appearance: none;
+      height: 6px;
+      border-radius: 999px;
+      outline: none;
+    }
+    .dark input[type="range"] { background: #27272A; }
+    input[type="range"] { background: #D1D5DB; }
+    input[type="range"]::-webkit-slider-thumb {
+      -webkit-appearance: none;
+      appearance: none;
+      width: 16px;
+      height: 16px;
+      border-radius: 50%;
+      background: #D7FF00;
+      border: 2px solid #0E0C0F;
+      cursor: pointer;
+    }
+
+    .card-hidden { display: none !important; }
+  </style>
+</head>
+<body class="bg-cloudGray text-zinc-900 dark:bg-obsidian dark:text-zinc-100 font-sans antialiased selection:bg-limeAccent selection:text-obsidian">
+
+  <!-- Top Sticky Header -->
+  <header class="sticky top-0 z-40 border-b border-zinc-300 dark:border-zinc-800 bg-white/90 dark:bg-obsidian/90 backdrop-blur-md">
+    <div class="max-w-[1440px] mx-auto px-4 sm:px-6 h-16 flex items-center justify-between gap-3">
+      <!-- Left: Mobile Sidebar Toggle + Brand -->
+      <div class="flex items-center gap-3">
+        <button id="sidebarToggleBtn" aria-label="Toggle Navigation" class="lg:hidden p-2 rounded-lg border border-zinc-300 dark:border-zinc-700 hover:border-limeAccent transition">
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 12h16M4 18h16"/>
+          </svg>
+        </button>
+        <div class="flex items-center gap-2.5">
+          <span class="inline-flex items-center justify-center w-9 h-9 rounded-xl bg-obsidian dark:bg-limeAccent text-limeAccent dark:text-obsidian font-mono font-extrabold text-sm shadow-sm">
+            RCL
+          </span>
+          <div>
+            <h1 class="text-sm sm:text-base font-extrabold tracking-tight leading-none">
+              CIRCUITS MASTER REFERENCE
+            </h1>
+            <p class="text-[11px] font-mono text-zinc-500 dark:text-zinc-400 mt-0.5">
+              Chapters 1 &amp; 2 • Pages 1–100 Complete Extraction
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Center: Live Search Bar -->
+      <div class="flex-1 max-w-md hidden md:block">
+        <div class="relative">
+          <svg class="w-4 h-4 absolute left-3 top-1/2 -translate-y-1/2 text-zinc-400" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+            <circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/>
+          </svg>
+          <input
+            id="searchInput"
+            type="text"
+            placeholder="Search KCL, KVL, Thévenin, Superposition, τ=RC, switching..."
+            class="w-full pl-9 pr-16 py-2 text-xs sm:text-sm rounded-xl border border-zinc-300 dark:border-zinc-700 bg-zinc-100 dark:bg-surface focus:outline-none focus:border-zinc-900 dark:focus:border-limeAccent transition"
+          />
+          <button id="clearSearchBtn" class="hidden absolute right-2.5 top-1/2 -translate-y-1/2 text-[11px] font-mono px-1.5 py-0.5 rounded bg-zinc-300 dark:bg-zinc-700 hover:bg-limeAccent hover:text-obsidian">
+            ESC
+          </button>
+        </div>
+      </div>
+
+      <!-- Right: Mastery Counter + Theme Toggle -->
+      <div class="flex items-center gap-2 sm:gap-3">
+        <div class="hidden sm:flex items-center gap-2 px-3 py-1.5 rounded-xl border border-zinc-300 dark:border-zinc-800 bg-zinc-100 dark:bg-surface">
+          <span class="text-[11px] font-mono text-zinc-500 dark:text-zinc-400">MASTERY</span>
+          <span id="masteryBadge" class="text-xs font-mono font-bold text-emerald-700 dark:text-limeAccent">0 / 28</span>
+        </div>
+        <button id="themeToggleBtn" title="Toggle Dark/Light Mode" class="p-2.5 rounded-xl border border-zinc-300 dark:border-zinc-700 bg-zinc-100 dark:bg-surface hover:border-zinc-900 dark:hover:border-limeAccent transition">
+          <!-- Sun icon (shown in dark mode) -->
+          <svg id="sunIcon" class="w-4 h-4 text-limeAccent hidden dark:block" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+            <circle cx="12" cy="12" r="4"/><path d="M12 2v2m0 16v2M4.93 4.93l1.41 1.41m11.32 11.32l1.41 1.41M2 12h2m16 0h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"/>
+          </svg>
+          <!-- Moon icon (shown in light mode) -->
+          <svg id="moonIcon" class="w-4 h-4 text-zinc-800 block dark:hidden" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+            <path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"/>
+          </svg>
+        </button>
+      </div>
+    </div>
+
+    <!-- Mobile Search + Filter Pills Bar -->
+    <div class="border-t border-zinc-200 dark:border-zinc-800/80 bg-zinc-50/90 dark:bg-surface/90 px-4 sm:px-6 py-2.5">
+      <div class="max-w-[1440px] mx-auto flex flex-col md:flex-row md:items-center justify-between gap-2">
+        <div class="md:hidden">
+          <input
+            id="mobileSearchInput"
+            type="text"
+            placeholder="Search rules, formulas, worked examples..."
+            class="w-full px-3 py-1.5 text-xs rounded-lg border border-zinc-300 dark:border-zinc-700 bg-white dark:bg-obsidian focus:outline-none focus:border-limeAccent"
+          />
+        </div>
+        <div id="filterPills" class="flex items-center gap-1.5 overflow-x-auto pb-1 md:pb-0">
+          <button data-filter="all" class="filter-btn active px-3 py-1 rounded-lg text-xs font-mono font-semibold bg-obsidian text-limeAccent dark:bg-limeAccent dark:text-obsidian transition whitespace-nowrap">
+            All Content
+          </button>
+          <button data-filter="ch1" class="filter-btn px-3 py-1 rounded-lg text-xs font-mono font-medium bg-zinc-200 dark:bg-zinc-800 hover:bg-zinc-300 dark:hover:bg-zinc-700 transition whitespace-nowrap">
+            Chapter 1 (1.1–1.10)
+          </button>
+          <button data-filter="ch2" class="filter-btn px-3 py-1 rounded-lg text-xs font-mono font-medium bg-zinc-200 dark:bg-zinc-800 hover:bg-zinc-300 dark:hover:bg-zinc-700 transition whitespace-nowrap">
+            Chapter 2 (2.1–2.3)
+          </button>
+          <button data-filter="law" class="filter-btn px-3 py-1 rounded-lg text-xs font-mono font-medium bg-zinc-200 dark:bg-zinc-800 hover:bg-zinc-300 dark:hover:bg-zinc-700 transition whitespace-nowrap">
+            Laws &amp; Rules
+          </button>
+          <button data-filter="formula" class="filter-btn px-3 py-1 rounded-lg text-xs font-mono font-medium bg-zinc-200 dark:bg-zinc-800 hover:bg-zinc-300 dark:hover:bg-zinc-700 transition whitespace-nowrap">
+            Formulas
+          </button>
+          <button data-filter="notice" class="filter-btn px-3 py-1 rounded-lg text-xs font-mono font-medium bg-zinc-200 dark:bg-zinc-800 hover:bg-zinc-300 dark:hover:bg-zinc-700 transition whitespace-nowrap">
+            Notices &amp; Exam Traps
+          </button>
+          <button data-filter="example" class="filter-btn px-3 py-1 rounded-lg text-xs font-mono font-medium bg-zinc-200 dark:bg-zinc-800 hover:bg-zinc-300 dark:hover:bg-zinc-700 transition whitespace-nowrap">
+            Worked Examples
+          </button>
+        </div>
+        <div class="text-[11px] font-mono text-zinc-500 dark:text-zinc-400 shrink-0">
+          Showing <span id="visibleCount" class="font-bold text-zinc-900 dark:text-limeAccent">All</span> sections
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- Main Container -->
+  <div class="max-w-[1440px] mx-auto px-4 sm:px-6 py-6 flex gap-6 relative">
+
+    <!-- Collapsible Sticky Sidebar Navigation -->
+    <aside id="sidebarNav" class="fixed inset-y-0 left-0 z-50 w-72 transform -translate-x-full lg:translate-x-0 lg:static lg:block shrink-0 transition-transform duration-200 bg-white dark:bg-surface lg:bg-transparent lg:dark:bg-transparent border-r lg:border-r-0 border-zinc-300 dark:border-zinc-800 p-4 lg:p-0 overflow-y-auto">
+      <div class="lg:sticky lg:top-32 space-y-4">
+        <div class="flex items-center justify-between lg:hidden pb-2 border-b border-zinc-200 dark:border-zinc-800">
+          <span class="font-mono text-xs font-bold uppercase tracking-wider">Table of Contents</span>
+          <button id="closeSidebarBtn" class="p-1.5 rounded-lg bg-zinc-200 dark:bg-zinc-800 text-xs font-mono">Close</button>
+        </div>
+
+        <!-- Chapter 1 Nav -->
+        <div class="p-3.5 rounded-2xl border border-zinc-300 dark:border-zinc-800 bg-white dark:bg-surface">
+          <div class="text-[11px] font-mono font-bold uppercase tracking-wider text-emerald-700 dark:text-limeAccent mb-2">
+            Chapter 1 • Basic Concepts &amp; Laws
+          </div>
+          <nav class="space-y-1 text-xs">
+            <a href="#sec-1-1" class="nav-link block px-2.5 py-1.5 rounded-lg hover:bg-zinc-100 dark:hover:bg-zinc-800/80 transition">1.1 Function &amp; Components</a>
+            <a href="#sec-1-2" class="nav-link block px-2.5 py-1.5 rounded-lg hover:bg-zinc-100 dark:hover:bg-zinc-800/80 transition">1.2 Basic Quantities ($I, V, U, E, P, W$)</a>
+            <a href="#sec-1-3" class="nav-link block px-2.5 py-1.5 rounded-lg hover:bg-zinc-100 dark:hover:bg-zinc-800/80 transition">1.3 Circuit Conditions (3 States)</a>
+            <a href="#sec-1-4" class="nav-link block px-2.5 py-1.5 rounded-lg hover:bg-zinc-100 dark:hover:bg-zinc-800/80 transition">1.4 Reference Point &amp; Direction</a>
+            <a href="#sec-1-5" class="nav-link block px-2.5 py-1.5 rounded-lg hover:bg-zinc-100 dark:hover:bg-zinc-800/80 transition">1.5 Ideal Elements &amp; Power Sign</a>
+            <a href="#sec-1-6" class="nav-link block px-2.5 py-1.5 rounded-lg hover:bg-zinc-100 dark:hover:bg-zinc-800/80 transition">1.6 Practical Sources &amp; ST</a>
+            <a href="#sec-1-7" class="nav-link block px-2.5 py-1.5 rounded-lg hover:bg-zinc-100 dark:hover:bg-zinc-800/80 transition">1.7 Kirchhoff's Laws (KCL &amp; KVL)</a>
+            <a href="#sec-1-8" class="nav-link block px-2.5 py-1.5 rounded-lg hover:bg-zinc-100 dark:hover:bg-zinc-800/80 transition">1.8 Branch Current Analysis (BCA)</a>
+            <a href="#sec-1-9" class="nav-link block px-2.5 py-1.5 rounded-lg hover:bg-zinc-100 dark:hover:bg-zinc-800/80 transition">1.9 Superposition Theorem</a>
+            <a href="#sec-1-10" class="nav-link block px-2.5 py-1.5 rounded-lg hover:bg-zinc-100 dark:hover:bg-zinc-800/80 transition">1.10 Thévenin &amp; Norton Theorems</a>
+          </nav>
+        </div>
+
+        <!-- Chapter 2 Nav -->
+        <div class="p-3.5 rounded-2xl border border-zinc-300 dark:border-zinc-800 bg-white dark:bg-surface">
+          <div class="text-[11px] font-mono font-bold uppercase tracking-wider text-emerald-700 dark:text-limeAccent mb-2">
+            Chapter 2 • Transient Analysis
+          </div>
+          <nav class="space-y-1 text-xs">
+            <a href="#sec-2-1" class="nav-link block px-2.5 py-1.5 rounded-lg hover:bg-zinc-100 dark:hover:bg-zinc-800/80 transition">2.1 Steady State vs. Transient</a>
+            <a href="#sec-2-2" class="nav-link block px-2.5 py-1.5 rounded-lg hover:bg-zinc-100 dark:hover:bg-zinc-800/80 transition">2.2 Switching (Commutation) Law</a>
+            <a href="#sec-2-3" class="nav-link block px-2.5 py-1.5 rounded-lg hover:bg-zinc-100 dark:hover:bg-zinc-800/80 transition">2.3 Three-Element Method &amp; ODEs</a>
+          </nav>
+        </div>
+
+        <!-- Interactive Simulators Quick Jump -->
+        <div class="p-3.5 rounded-2xl border border-zinc-300 dark:border-zinc-800 bg-white dark:bg-surface">
+          <div class="text-[11px] font-mono font-bold uppercase tracking-wider text-zinc-500 dark:text-zinc-400 mb-2">
+            Interactive Simulators
+          </div>
+          <nav class="space-y-1 text-xs font-mono">
+            <a href="#sim-source-state" class="block px-2.5 py-1.5 rounded-lg bg-zinc-100 dark:bg-zinc-800/60 hover:border-limeAccent border border-transparent transition">⚡ Circuit States &amp; Power</a>
+            <a href="#sim-st" class="block px-2.5 py-1.5 rounded-lg bg-zinc-100 dark:bg-zinc-800/60 hover:border-limeAccent border border-transparent transition">🔄 Source Transformation</a>
+            <a href="#sim-transient" class="block px-2.5 py-1.5 rounded-lg bg-zinc-100 dark:bg-zinc-800/60 hover:border-limeAccent border border-transparent transition">📈 3-Element Transient Plotter</a>
+          </nav>
+        </div>
+      </div>
+    </aside>
+
+    <!-- Main Content Column -->
+    <main class="flex-1 min-w-0 space-y-8">
+
+      <!-- Document Scope & Completeness Banner -->
+      <section class="p-5 rounded-2xl border border-zinc-300 dark:border-zinc-800 bg-white dark:bg-surface shadow-sm">
+        <div class="flex flex-col sm:flex-row sm:items-start justify-between gap-4">
+          <div class="space-y-1.5">
+            <div class="inline-flex items-center gap-2 px-2.5 py-1 rounded-md bg-emerald-100 dark:bg-limeAccent/15 text-emerald-800 dark:text-limeAccent text-xs font-mono font-semibold">
+              <span>100% EXTRACTION VERIFIED</span>
+              <span>•</span>
+              <span>PAGES 1–100</span>
+            </div>
+            <h2 class="text-xl sm:text-2xl font-extrabold tracking-tight">
+              Circuits_Chapters_1-4_A4 — Complete Study &amp; Formula Reference
+            </h2>
+            <p class="text-xs sm:text-sm text-zinc-600 dark:text-zinc-300 leading-relaxed">
+              Every single definition, law, rule, sign convention, exam notice, formula, schematic topology, and worked example from <strong>Chapter 1 (Basic Concepts &amp; Laws of Circuits)</strong> and <strong>Chapter 2 (Transient Analysis of First-Order Circuits &amp; Three-Element Method)</strong> across pages 1–100 is preserved here without omission.
+            </p>
+          </div>
+          <button id="resetProgressBtn" class="shrink-0 self-start px-3 py-1.5 rounded-xl border border-zinc-300 dark:border-zinc-700 text-xs font-mono hover:border-red-500 hover:text-red-500 transition">
+            Reset Checklist
+          </button>
+        </div>
+        <!-- Explicit Note on Pages 101-181 -->
+        <div class="mt-4 p-3 rounded-xl border border-amber-400/50 bg-amber-50 dark:bg-amber-950/25 text-amber-900 dark:text-amber-200 text-xs flex items-start gap-2.5">
+          <span class="font-mono font-bold px-1.5 py-0.5 rounded bg-amber-200 dark:bg-amber-900/60 shrink-0">PDF NOTE</span>
+          <p>
+            <strong>Document Coverage Notice:</strong> Pages <strong>1–100</strong> of the uploaded PDF file (<em>Circuits_Chapters_1-4_A4</em>) contain the complete lecture slides for Chapter 1 (pp. 1–80) and Chapter 2 (pp. 81–100), all of which are extracted below with 100% fidelity. Pages <strong>101–181</strong> in the uploaded PDF file consisted entirely of blank/unrendered pages and therefore contain no extractable text or diagrams.
+          </p>
+        </div>
+      </section>
+
+      <!-- ===================================================================== -->
+      <!-- CHAPTER 1 HEADER -->
+      <!-- ===================================================================== -->
+      <div class="pt-2">
+        <div class="flex items-center gap-3">
+          <span class="px-3 py-1 rounded-lg bg-obsidian text-limeAccent dark:bg-limeAccent dark:text-obsidian font-mono font-extrabold text-xs">CHAPTER 01</span>
+          <h2 class="text-xl sm:text-2xl font-extrabold tracking-tight">The Basic Concepts and Laws of Circuits</h2>
+        </div>
+        <p class="text-xs font-mono text-zinc-500 dark:text-zinc-400 mt-1">Textbook Pages 1–80 • Sections 1.1 through 1.10</p>
+      </div>
+
+      <!-- ===================================================================== -->
+      <!-- SECTION 1.1: FUNCTION AND COMPONENTS -->
+      <!-- ===================================================================== -->
+      <section id="sec-1-1" class="content-card p-5 sm:p-6 rounded-2xl border border-zinc-300 dark:border-zinc-800 bg-white dark:bg-surface space-y-5" data-chapter="ch1" data-tags="ch1 law example">
+        <div class="flex items-start justify-between gap-3 border-b border-zinc-200 dark:border-zinc-800 pb-3">
+          <div>
+            <span class="text-xs font-mono text-emerald-700 dark:text-limeAccent font-semibold">SECTION 1.1 • PAGES 3–10</span>
+            <h3 class="text-lg sm:text-xl font-bold mt-0.5">Function and Components of Circuits</h3>
+          </div>
+          <label class="flex items-center gap-2 text-xs font-mono cursor-pointer select-none">
+            <input type="checkbox" class="mastery-chk w-4 h-4 accent-limeAccent rounded" data-id="r-1-1" />
+            <span>Mastered</span>
+          </label>
+        </div>
+
+        <!-- Core Definitions -->
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+          <div class="p-4 rounded-xl border border-zinc-200 dark:border-zinc-800 bg-zinc-50 dark:bg-obsidian/60">
+            <div class="text-xs font-mono font-bold text-emerald-700 dark:text-limeAccent uppercase">Definition: Circuit</div>
+            <p class="text-sm mt-1.5 leading-relaxed">A <strong>closed path or loop</strong> around which electric current flows.</p>
+          </div>
+          <div class="p-4 rounded-xl border border-zinc-200 dark:border-zinc-800 bg-zinc-50 dark:bg-obsidian/60">
+            <div class="text-xs font-mono font-bold text-emerald-700 dark:text-limeAccent uppercase">Actual Circuit</div>
+            <p class="text-sm mt-1.5 leading-relaxed">A combination of physical electrical equipment or devices connected in a certain way for a specific practical purpose.</p>
+          </div>
+          <div class="p-4 rounded-xl border border-zinc-200 dark:border-zinc-800 bg-zinc-50 dark:bg-obsidian/60">
+            <div class="text-xs font-mono font-bold text-emerald-700 dark:text-limeAccent uppercase">Circuit Model</div>
+            <p class="text-sm mt-1.5 leading-relaxed">An idealized representation composed of <strong>ideal circuit elements</strong> ($R, L, C, U_S, I_S$) used for mathematical analysis of an actual circuit.</p>
+          </div>
+        </div>
+
+        <!-- Types and Functions Comparison Table -->
+        <div class="overflow-x-auto rounded-xl border border-zinc-200 dark:border-zinc-800">
+          <table class="w-full text-left text-xs sm:text-sm border-collapse">
+            <thead>
+              <tr class="bg-zinc-100 dark:bg-zinc-900 font-mono text-xs border-b border-zinc-200 dark:border-zinc-800">
+                <th class="p-3">Classification</th>
+                <th class="p-3">Primary Function &amp; Signal/Energy Flow</th>
+                <th class="p-3">Characteristics &amp; Members</th>
+                <th class="p-3">Engineering Focus</th>
+              </tr>
+            </thead>
+            <tbody class="divide-y divide-zinc-200 dark:divide-zinc-800">
+              <tr>
+                <td class="p-3 font-bold text-emerald-700 dark:text-limeAccent align-top">1. Power Circuit</td>
+                <td class="p-3 align-top">
+                  <strong>Generation, transmission, and conversion of electrical energy.</strong><br/>
+                  <span class="font-mono text-xs text-zinc-500 dark:text-zinc-400">Generator &rarr; Step-up Transformer &rarr; Transmission Line &rarr; Step-down Transformer &rarr; Loads (Lights [light energy], Heater [heat energy], Motor [mechanical energy])</span>
+                </td>
+                <td class="p-3 align-top">
+                  <strong>Characteristics:</strong> Voltage, current, power.<br/>
+                  <strong>Members:</strong> Lighting systems, power distribution grids.
+                </td>
+                <td class="p-3 align-top font-semibold">Efficiency ($\eta$) &amp; safe energy delivery</td>
+              </tr>
+              <tr>
+                <td class="p-3 font-bold text-emerald-700 dark:text-limeAccent align-top">2. Signal Circuit</td>
+                <td class="p-3 align-top">
+                  <strong>Transmission and processing of information/signals.</strong><br/>
+                  <span class="font-mono text-xs text-zinc-500 dark:text-zinc-400">Source / Microphone &rarr; Amplifier &rarr; Other Signal Processing Unit &rarr; Loudspeaker (Electrical signal &rarr; Sound signal)</span>
+                </td>
+                <td class="p-3 align-top">
+                  <strong>Characteristics:</strong> Voltage, current, power.<br/>
+                  <strong>Members:</strong> CATV, telephone, computer network, Wi-Fi.
+                </td>
+                <td class="p-3 align-top font-semibold">Effect (Ensure high signal transmission quality / fidelity)</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <!-- 3 Basic Circuit Components + Electric Torch & Load Increase Rules -->
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-4">
+          <div class="p-4 rounded-xl border border-zinc-200 dark:border-zinc-800 bg-zinc-50 dark:bg-obsidian/60 space-y-2.5">
+            <h4 class="font-bold text-sm flex items-center gap-2">
+              <span class="px-2 py-0.5 rounded bg-limeAccent text-obsidian font-mono text-xs">3 PARTS</span>
+              Basic Circuit Components
+            </h4>
+            <ul class="space-y-2 text-xs sm:text-sm">
+              <li><strong>1. Sources (Power Supply):</strong> Device that supplies electrical energy or signals (e.g., battery, generator). <em>Note: Actual output power depends on the load.</em></li>
+              <li><strong>2. Load:</strong> Device that converts electrical energy into non-electrical energy (e.g., bulb, motor, heater).</li>
+              <li><strong>3. Intermediate Link:</strong> Equipment for transmission, control, and protection of electrical energy (conductors/wires, switches, fuses, relays).</li>
+            </ul>
+            <div class="p-2.5 rounded-lg bg-white dark:bg-surface border border-zinc-200 dark:border-zinc-700 text-xs">
+              <strong>Example — Electric Torch:</strong> Source = <em>Battery</em>; Load = <em>Small Bulb</em>; Intermediate Link = <em>Switch &amp; Spring</em>.
+            </div>
+          </div>
+
+          <div class="p-4 rounded-xl border border-zinc-200 dark:border-zinc-800 bg-zinc-50 dark:bg-obsidian/60 space-y-2.5">
+            <h4 class="font-bold text-sm flex items-center gap-2">
+              <span class="px-2 py-0.5 rounded bg-amber-400 text-obsidian font-mono text-xs">REVIEW Q&amp;A</span>
+              Key Concept Rules &amp; Terminology
+            </h4>
+            <ul class="space-y-2 text-xs sm:text-sm">
+              <li><strong>What does "Load Increase" mean?</strong> It means the load consumes <em>more electric power</em>, i.e., the <strong>load current $I$ increases</strong> (typically by adding parallel loads, reducing equivalent load resistance).</li>
+              <li><strong>Classification Q&amp;A:</strong> A simple temperature-measuring circuit (thermocouple + mA meter) is a <strong>Signal Circuit</strong>; a battery + bulb lighting circuit is a <strong>Power Circuit</strong>.</li>
+              <li><strong>Basic Terms:</strong>
+                <span class="block mt-1 text-xs text-zinc-600 dark:text-zinc-300">
+                  • <strong>DC (Direct Current):</strong> Currents &amp; voltages are constant with time.<br/>
+                  • <strong>AC (Alternating Current):</strong> Currents &amp; voltages alternate with time.<br/>
+                  • <strong>Sinusoidal AC:</strong> Currents &amp; voltages alternate in sinusoidal form.<br/>
+                  • <strong>Two-terminal Network:</strong> A network with only two wires connected to external networks.<br/>
+                  • <strong>Passive vs. Active Network:</strong> Passive contains only passive elements ($R, L, C$) with no independent internal sources; Active contains internal energy sources.
+                </span>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      <!-- ===================================================================== -->
+      <!-- SECTION 1.2: BASIC QUANTITIES -->
+      <!-- ===================================================================== -->
+      <section id="sec-1-2" class="content-card p-5 sm:p-6 rounded-2xl border border-zinc-300 dark:border-zinc-800 bg-white dark:bg-surface space-y-5" data-chapter="ch1" data-tags="ch1 formula law notice example">
+        <div class="flex items-start justify-between gap-3 border-b border-zinc-200 dark:border-zinc-800 pb-3">
+          <div>
+            <span class="text-xs font-mono text-emerald-700 dark:text-limeAccent font-semibold">SECTION 1.2 • PAGES 11–18</span>
+            <h3 class="text-lg sm:text-xl font-bold mt-0.5">Basic Electrical Quantities ($I, V, U, E, P, W$)</h3>
+          </div>
+          <label class="flex items-center gap-2 text-xs font-mono cursor-pointer select-none">
+            <input type="checkbox" class="mastery-chk w-4 h-4 accent-limeAccent rounded" data-id="r-1-2" />
+            <span>Mastered</span>
+          </label>
+        </div>
+
+        <!-- 6 Quantities Grid -->
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+          <!-- 1.2.1 Current -->
+          <div class="p-4 rounded-xl border border-zinc-200 dark:border-zinc-800 bg-zinc-50 dark:bg-obsidian/60 flex flex-col justify-between">
+            <div>
+              <div class="text-xs font-mono font-bold text-emerald-700 dark:text-limeAccent">1.2.1 CURRENT ($I$)</div>
+              <p class="text-xs sm:text-sm mt-1">Electric charge flowing past a given point per unit of time. Unit: <strong>Ampere ($\text{A}$)</strong>.</p>
+            </div>
+            <div class="mt-3 p-2.5 rounded-lg bg-white dark:bg-surface border border-zinc-200 dark:border-zinc-700 font-mono text-xs text-center">
+              $$I = \frac{Q}{t} \quad \left(1\text{ A} = \frac{1\text{ C}}{1\text{ s}}\right)$$
+            </div>
+          </div>
+
+          <!-- 1.2.2 Electric Potential -->
+          <div class="p-4 rounded-xl border border-zinc-200 dark:border-zinc-800 bg-zinc-50 dark:bg-obsidian/60 flex flex-col justify-between">
+            <div>
+              <div class="text-xs font-mono font-bold text-emerald-700 dark:text-limeAccent">1.2.2 ELECTRIC POTENTIAL ($V$)</div>
+              <p class="text-xs sm:text-sm mt-1">Work done by the electric field to move a unit positive charge from a node to the <strong>reference node</strong>. Unit: <strong>Volt ($\text{V}$)</strong>.</p>
+            </div>
+            <div class="mt-3 p-2.5 rounded-lg bg-amber-50 dark:bg-amber-950/30 border border-amber-400/40 text-xs">
+              <strong>Rule:</strong> Potential is <em>relative</em> — meaningful <strong>ONLY</strong> when a reference node ($0\text{V}$) is specified.
+            </div>
+          </div>
+
+          <!-- 1.2.3 Voltage -->
+          <div class="p-4 rounded-xl border border-zinc-200 dark:border-zinc-800 bg-zinc-50 dark:bg-obsidian/60 flex flex-col justify-between">
+            <div>
+              <div class="text-xs font-mono font-bold text-emerald-700 dark:text-limeAccent">1.2.3 VOLTAGE ($U$ or $V$)</div>
+              <p class="text-xs sm:text-sm mt-1">Energy required to move a unit charge between two points (potential difference). $U_S$: source voltage; $U_L$: load voltage. Unit: <strong>Volt ($\text{V}$)</strong>.</p>
+            </div>
+            <div class="mt-3 p-2.5 rounded-lg bg-white dark:bg-surface border border-zinc-200 dark:border-zinc-700 font-mono text-xs text-center">
+              $$U_{ab} = V_a - V_b = \frac{W_{ab}}{Q}$$
+            </div>
+          </div>
+
+          <!-- 1.2.4 EMF -->
+          <div class="p-4 rounded-xl border border-zinc-200 dark:border-zinc-800 bg-zinc-50 dark:bg-obsidian/60 flex flex-col justify-between">
+            <div>
+              <div class="text-xs font-mono font-bold text-emerald-700 dark:text-limeAccent">1.2.4 ELECTROMOTIVE FORCE ($E$)</div>
+              <p class="text-xs sm:text-sm mt-1">Work done by <strong>non-electric forces</strong> (chemical, mechanical) to move a unit charge through the source from $-$ to $+$.</p>
+            </div>
+            <div class="mt-3 p-2.5 rounded-lg bg-amber-50 dark:bg-amber-950/30 border border-amber-400/40 text-xs">
+              <strong>Distinction:</strong> Same unit ($\text{V}$) as voltage, but $E$ acts <em>inside the source</em>, while $U$ exists between two points in the <em>external circuit</em>.
+            </div>
+          </div>
+
+          <!-- 1.2.5 Power -->
+          <div class="p-4 rounded-xl border border-zinc-200 dark:border-zinc-800 bg-zinc-50 dark:bg-obsidian/60 flex flex-col justify-between">
+            <div>
+              <div class="text-xs font-mono font-bold text-emerald-700 dark:text-limeAccent">1.2.5 ELECTRIC POWER ($P$)</div>
+              <p class="text-xs sm:text-sm mt-1">Time rate of providing or absorbing electrical energy. Unit: <strong>Watt ($\text{W}$)</strong>.</p>
+            </div>
+            <div class="mt-3 p-2.5 rounded-lg bg-white dark:bg-surface border border-zinc-200 dark:border-zinc-700 font-mono text-xs text-center">
+              $$P_S = U_S I \quad \text{(Source)}, \quad P_L = U_L I \quad \text{(Load)}$$
+            </div>
+          </div>
+
+          <!-- 1.2.6 Electric Energy -->
+          <div class="p-4 rounded-xl border border-zinc-200 dark:border-zinc-800 bg-zinc-50 dark:bg-obsidian/60 flex flex-col justify-between">
+            <div>
+              <div class="text-xs font-mono font-bold text-emerald-700 dark:text-limeAccent">1.2.6 ELECTRIC ENERGY ($W$)</div>
+              <p class="text-xs sm:text-sm mt-1">Total work done / energy consumed over time $t$. SI Unit: <strong>Joule ($\text{J}$)</strong>; Engineering unit: <strong>$\text{kW}\cdot\text{h}$</strong>.</p>
+            </div>
+            <div class="mt-3 p-2.5 rounded-lg bg-white dark:bg-surface border border-zinc-200 dark:border-zinc-700 font-mono text-xs text-center">
+              $$W = P \cdot t, \quad 1\text{ kW}\cdot\text{h} = 3.6 \times 10^6\text{ J}$$
+            </div>
+          </div>
+        </div>
+
+        <!-- Worked Examples for 1.2 -->
+        <div class="p-4 rounded-xl border border-zinc-200 dark:border-zinc-800 bg-zinc-50 dark:bg-obsidian/60 space-y-3">
+          <div class="text-xs font-mono font-bold uppercase text-emerald-700 dark:text-limeAccent">Worked Examples — Section 1.2</div>
+          <div class="grid grid-cols-1 lg:grid-cols-3 gap-4 text-xs sm:text-sm">
+            <!-- Potential & Voltage Example -->
+            <div class="p-3 rounded-lg bg-white dark:bg-surface border border-zinc-200 dark:border-zinc-700 space-y-2">
+              <div class="font-bold">Ex 1.2A: Potential vs. Voltage ($10\text{V}$, $R_1=2\Omega$, $R_2=2\Omega$)</div>
+              <svg class="schematic-svg w-full h-24" viewBox="0 0 260 95">
+                <line x1="30" y1="20" x2="230" y2="20" class="schematic-stroke" stroke-width="1.5"/>
+                <line x1="30" y1="75" x2="230" y2="75" class="schematic-stroke" stroke-width="1.5"/>
+                <line x1="30" y1="20" x2="30" y2="38" class="schematic-stroke" stroke-width="1.5"/>
+                <circle cx="30" cy="48" r="10" fill="none" class="schematic-stroke" stroke-width="1.5"/>
+                <text x="27" y="45" font-size="9" class="schematic-text">+</text>
+                <text x="27" y="55" font-size="9" class="schematic-text">-</text>
+                <text x="4" y="51" font-size="9" class="schematic-text">10V</text>
+                <line x1="30" y1="58" x2="30" y2="75" class="schematic-stroke" stroke-width="1.5"/>
+                <rect x="75" y="13" width="36" height="14" fill="none" class="schematic-stroke" stroke-width="1.5"/>
+                <text x="82" y="10" font-size="9" class="schematic-text">2Ω</text>
+                <rect x="165" y="13" width="36" height="14" fill="none" class="schematic-stroke" stroke-width="1.5"/>
+                <text x="172" y="10" font-size="9" class="schematic-text">2Ω</text>
+                <circle cx="50" cy="20" r="2.5" class="schematic-accent-fill"/><text x="47" y="12" font-size="9" class="schematic-text">a</text>
+                <circle cx="138" cy="20" r="2.5" class="schematic-accent-fill"/><text x="135" y="12" font-size="9" class="schematic-text">b</text>
+                <circle cx="230" cy="75" r="2.5" class="schematic-accent-fill"/><text x="234" y="78" font-size="9" class="schematic-text">c</text>
+              </svg>
+              <ul class="text-xs space-y-1 text-zinc-600 dark:text-zinc-300">
+                <li>• <strong>Voltage:</strong> $I = 10/(2+2)=2.5\text{A} \implies U_{ab}=5\text{V}, U_{bc}=5\text{V}$ (always fixed).</li>
+                <li>• <strong>If $c$ is reference ($V_c=0\text{V}$):</strong> $V_a = 10\text{V}, V_b = 5\text{V}$.</li>
+                <li>• <strong>If no reference node is given:</strong> Potentials $V_a, V_b, V_c$ cannot be determined.</li>
+                <li>• <strong>If $a$ is reference ($V_a=0\text{V}$):</strong> $V_b = U_{ba} = -5\text{V}, V_c = -10\text{V}$.</li>
+              </ul>
+            </div>
+
+            <!-- Power Example -->
+            <div class="p-3 rounded-lg bg-white dark:bg-surface border border-zinc-200 dark:border-zinc-700 space-y-2">
+              <div class="font-bold">Ex 1.2B: Bulb Power Calculation</div>
+              <p class="text-xs text-zinc-600 dark:text-zinc-300">A light bulb operates at voltage $U = 6\text{V}$ and draws current $I = 1.6\text{A}$. Find the power absorbed.</p>
+              <div class="p-2.5 rounded bg-zinc-100 dark:bg-obsidian font-mono text-xs">
+                $$P = U \times I = 6\text{V} \times 1.6\text{A} = 9.6\text{W}$$
+              </div>
+            </div>
+
+            <!-- Energy Example -->
+            <div class="p-3 rounded-lg bg-white dark:bg-surface border border-zinc-200 dark:border-zinc-700 space-y-2">
+              <div class="font-bold">Ex 1.2C: Electric Energy Consumption</div>
+              <p class="text-xs text-zinc-600 dark:text-zinc-300">A small indicator bulb draws $I = 10\text{mA}$ ($0.01\text{A}$) at $U = 2\text{V}$ for $t = 30\text{ minutes}$ ($1800\text{s}$). Find energy $W$.</p>
+              <div class="p-2.5 rounded bg-zinc-100 dark:bg-obsidian font-mono text-xs">
+                $$P = 2\text{V} \times 0.01\text{A} = 0.02\text{W}$$
+                $$W = P \cdot t = 0.02 \times 1800 = 36\text{ J} = 10^{-5}\text{ kW}\cdot\text{h}$$
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ===================================================================== -->
+      <!-- SECTION 1.3: CIRCUIT CONDITIONS (3 OPERATING STATES) -->
+      <!-- ===================================================================== -->
+      <section id="sec-1-3" class="content-card p-5 sm:p-6 rounded-2xl border border-zinc-300 dark:border-zinc-800 bg-white dark:bg-surface space-y-5" data-chapter="ch1" data-tags="ch1 law formula example">
+        <div class="flex items-start justify-between gap-3 border-b border-zinc-200 dark:border-zinc-800 pb-3">
+          <div>
+            <span class="text-xs font-mono text-emerald-700 dark:text-limeAccent font-semibold">SECTION 1.3 • PAGES 19–22</span>
+            <h3 class="text-lg sm:text-xl font-bold mt-0.5">Circuit Conditions: Closed, Open, and Short Circuits</h3>
+          </div>
+          <label class="flex items-center gap-2 text-xs font-mono cursor-pointer select-none">
+            <input type="checkbox" class="mastery-chk w-4 h-4 accent-limeAccent rounded" data-id="r-1-3" />
+            <span>Mastered</span>
+          </label>
+        </div>
+
+        <!-- 3 States Cards -->
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+          <!-- 1.3.1 Closed Circuit -->
+          <div class="p-4 rounded-xl border border-zinc-200 dark:border-zinc-800 bg-zinc-50 dark:bg-obsidian/60 space-y-2">
+            <div class="flex items-center justify-between">
+              <span class="text-xs font-mono font-bold text-emerald-700 dark:text-limeAccent">1.3.1 CLOSED CIRCUIT (LOADED)</span>
+              <span class="px-2 py-0.5 rounded bg-emerald-500/20 text-emerald-700 dark:text-limeAccent font-mono text-[10px]">NORMAL</span>
+            </div>
+            <p class="text-xs text-zinc-600 dark:text-zinc-300">Switch closed; continuous path without interruption; energy transmission and conversion occur.</p>
+            <div class="p-2.5 rounded-lg bg-white dark:bg-surface border border-zinc-200 dark:border-zinc-700 font-mono text-xs space-y-1">
+              <div>$I = \dfrac{U_S}{R_0 + R}$</div>
+              <div>$U = IR = U_S - IR_0$</div>
+              <div>$P_S = U_S I, \quad P = UI$</div>
+              <div>$\Delta P = I^2 R_0, \quad P = P_S - \Delta P$</div>
+            </div>
+          </div>
+
+          <!-- 1.3.2 Open Circuit -->
+          <div class="p-4 rounded-xl border border-zinc-200 dark:border-zinc-800 bg-zinc-50 dark:bg-obsidian/60 space-y-2">
+            <div class="flex items-center justify-between">
+              <span class="text-xs font-mono font-bold text-emerald-700 dark:text-limeAccent">1.3.2 OPEN CIRCUIT (NO LOAD)</span>
+              <span class="px-2 py-0.5 rounded bg-sky-500/20 text-sky-600 dark:text-sky-300 font-mono text-[10px]">$R \to \infty$</span>
+            </div>
+            <p class="text-xs text-zinc-600 dark:text-zinc-300">Part of the circuit is opened (switch open or broken wire); no current flows.</p>
+            <div class="p-2.5 rounded-lg bg-white dark:bg-surface border border-zinc-200 dark:border-zinc-700 font-mono text-xs space-y-1">
+              <div>$I = 0 \quad \text{(always zero)}$</div>
+              <div>$U = U_{OC} = U_S$</div>
+              <div>$P = 0 \quad \text{(no power delivered)}$</div>
+            </div>
+          </div>
+
+          <!-- 1.3.3 Short Circuit -->
+          <div class="p-4 rounded-xl border border-zinc-200 dark:border-zinc-800 bg-zinc-50 dark:bg-obsidian/60 space-y-2">
+            <div class="flex items-center justify-between">
+              <span class="text-xs font-mono font-bold text-red-600 dark:text-red-400">1.3.3 SHORT CIRCUIT</span>
+              <span class="px-2 py-0.5 rounded bg-red-500/20 text-red-600 dark:text-red-400 font-mono text-[10px]">FAULT ($R=0$)</span>
+            </div>
+            <p class="text-xs text-zinc-600 dark:text-zinc-300">Direct connection between two points not supposed to be directly connected. Dangerous high current!</p>
+            <div class="p-2.5 rounded-lg bg-white dark:bg-surface border border-zinc-200 dark:border-zinc-700 font-mono text-xs space-y-1">
+              <div>$U = 0 \quad \text{(always zero)}$</div>
+              <div>$I = I_{SC} = \dfrac{U_S}{R_0} \quad \text{(max current)}$</div>
+              <div>$P_{\text{load}} = 0 \quad (\text{all } P_S \text{ lost in } R_0)$</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Worked Example 1.3 -->
+        <div class="p-4 rounded-xl border border-zinc-200 dark:border-zinc-800 bg-zinc-50 dark:bg-obsidian/60">
+          <div class="text-xs font-mono font-bold text-emerald-700 dark:text-limeAccent mb-1">WORKED EXAMPLE 1.3 (PAGE 22)</div>
+          <p class="text-xs sm:text-sm">
+            <strong>Problem:</strong> A practical voltage source has open-circuit EMF $U_S = 125\text{V}$. When connected to a load, terminal voltage drops to $U = 115\text{V}$ and load current is $I = 4\text{A}$. Find generated power $P_S$, load power $P$, and internal resistance $R_0$.
+          </p>
+          <div class="mt-2 p-3 rounded-lg bg-white dark:bg-surface border border-zinc-200 dark:border-zinc-700 font-mono text-xs grid grid-cols-1 sm:grid-cols-3 gap-2">
+            <div>$P_S = U_S I = 125 \times 4 = \mathbf{500\text{W}}$</div>
+            <div>$P = U I = 115 \times 4 = \mathbf{460\text{W}}$</div>
+            <div>$R_0 = \dfrac{U_S - U}{I} = \dfrac{125 - 115}{4} = \mathbf{2.5\Omega}$</div>
+          </div>
+        </div>
+
+        <!-- INTERACTIVE SIMULATOR 1: Circuit Conditions & Power Analyzer -->
+        <div id="sim-source-state" class="p-4 sm:p-5 rounded-xl border-2 border-emerald-600/40 dark:border-limeAccent/40 bg-zinc-100/80 dark:bg-obsidian space-y-4">
+          <div class="flex flex-wrap items-center justify-between gap-2">
+            <div>
+              <span class="px-2 py-0.5 rounded bg-obsidian text-limeAccent dark:bg-limeAccent dark:text-obsidian font-mono text-[10px] font-bold">INTERACTIVE SIMULATOR</span>
+              <h4 class="font-bold text-sm sm:text-base mt-1">Practical Source Operating States &amp; Power Balance</h4>
+            </div>
+            <div class="flex gap-1.5 font-mono text-xs">
+              <button onclick="setCircuitStateMode('closed')" id="btnStateClosed" class="px-2.5 py-1 rounded-lg bg-obsidian text-limeAccent dark:bg-limeAccent dark:text-obsidian font-bold">Closed</button>
+              <button onclick="setCircuitStateMode('open')" id="btnStateOpen" class="px-2.5 py-1 rounded-lg bg-zinc-300 dark:bg-zinc-800">Open ($R=\infty$)</button>
+              <button onclick="setCircuitStateMode('short')" id="btnStateShort" class="px-2.5 py-1 rounded-lg bg-zinc-300 dark:bg-zinc-800">Short ($R=0$)</button>
+            </div>
+          </div>
+
+          <div class="grid grid-cols-1 lg:grid-cols-3 gap-4 items-center">
+            <!-- Sliders -->
+            <div class="space-y-3 text-xs font-mono">
+              <div>
+                <div class="flex justify-between mb-1"><span>Source Voltage $U_S$:</span><span id="lblUs" class="font-bold text-emerald-700 dark:text-limeAccent">125 V</span></div>
+                <input type="range" id="rngUs" min="5" max="240" value="125" class="w-full" oninput="updateSourceSim()" />
+              </div>
+              <div>
+                <div class="flex justify-between mb-1"><span>Internal Resistance $R_0$:</span><span id="lblR0" class="font-bold text-emerald-700 dark:text-limeAccent">2.5 Ω</span></div>
+                <input type="range" id="rngR0" min="0.5" max="20" step="0.5" value="2.5" class="w-full" oninput="updateSourceSim()" />
+              </div>
+              <div id="loadSliderGroup">
+                <div class="flex justify-between mb-1"><span>Load Resistance $R_L$:</span><span id="lblRL" class="font-bold text-emerald-700 dark:text-limeAccent">28.75 Ω</span></div>
+                <input type="range" id="rngRL" min="1" max="100" step="0.25" value="28.75" class="w-full" oninput="updateSourceSim()" />
+              </div>
+            </div>
+
+            <!-- Live SVG Schematic -->
+            <div class="flex justify-center bg-white dark:bg-surface p-3 rounded-xl border border-zinc-200 dark:border-zinc-800">
+              <svg class="schematic-svg w-full max-w-[260px] h-32" viewBox="0 0 260 130">
+                <!-- Dashed box for practical source -->
+                <rect x="12" y="12" width="115" height="106" rx="8" fill="none" stroke="#71717A" stroke-dasharray="4 3" stroke-width="1.2"/>
+                <text x="18" y="24" font-size="8" fill="#71717A">Practical Source</text>
+                <!-- Ideal Us -->
+                <circle cx="40" cy="68" r="14" fill="none" class="schematic-stroke" stroke-width="1.6"/>
+                <text x="36" y="63" font-size="10" class="schematic-text">+</text>
+                <text x="37" y="77" font-size="10" class="schematic-text">-</text>
+                <text x="16" y="96" font-size="9" id="svgUsTxt" class="schematic-text">125V</text>
+                <!-- Wires -->
+                <line x1="40" y1="32" x2="40" y2="54" class="schematic-stroke" stroke-width="1.6"/>
+                <line x1="40" y1="82" x2="40" y2="105" class="schematic-stroke" stroke-width="1.6"/>
+                <line x1="40" y1="32" x2="65" y2="32" class="schematic-stroke" stroke-width="1.6"/>
+                <!-- R0 -->
+                <rect x="65" y="25" width="36" height="14" fill="none" class="schematic-stroke" stroke-width="1.6"/>
+                <text x="68" y="21" font-size="8.5" id="svgR0Txt" class="schematic-text">R0=2.5Ω</text>
+                <line x1="101" y1="32" x2="155" y2="32" class="schematic-stroke" stroke-width="1.6"/>
+                <line x1="40" y1="105" x2="215" y2="105" class="schematic-stroke" stroke-width="1.6"/>
+                <!-- Switch / Path -->
+                <circle cx="155" cy="32" r="2.5" class="schematic-accent-fill"/>
+                <line id="svgSwitchLine" x1="155" y1="32" x2="185" y2="32" class="schematic-accent" stroke-width="2"/>
+                <circle cx="185" cy="32" r="2.5" class="schematic-accent-fill"/>
+                <line x1="185" y1="32" x2="215" y2="32" class="schematic-stroke" stroke-width="1.6"/>
+                <!-- Load Branch -->
+                <line x1="215" y1="32" x2="215" y2="48" class="schematic-stroke" stroke-width="1.6"/>
+                <rect id="svgLoadBox" x="207" y="48" width="16" height="38" fill="none" class="schematic-stroke" stroke-width="1.6"/>
+                <line id="svgShortWire" x1="215" y1="48" x2="215" y2="86" stroke="#EF4444" stroke-width="2.5" class="hidden"/>
+                <line x1="215" y1="86" x2="215" y2="105" class="schematic-stroke" stroke-width="1.6"/>
+                <text x="227" y="70" font-size="8.5" id="svgRLTxt" class="schematic-text">RL</text>
+                <text x="135" y="22" font-size="9" id="svgITxt" class="schematic-accent-fill">I = 4.00 A</text>
+              </svg>
+            </div>
+
+            <!-- Readouts -->
+            <div class="grid grid-cols-2 gap-2 font-mono text-xs">
+              <div class="p-2.5 rounded-lg bg-white dark:bg-surface border border-zinc-200 dark:border-zinc-800">
+                <div class="text-[10px] text-zinc-500">Current $I$</div>
+                <div id="outI" class="text-sm font-bold text-emerald-700 dark:text-limeAccent">4.00 A</div>
+              </div>
+              <div class="p-2.5 rounded-lg bg-white dark:bg-surface border border-zinc-200 dark:border-zinc-800">
+                <div class="text-[10px] text-zinc-500">Terminal $U$</div>
+                <div id="outU" class="text-sm font-bold">115.00 V</div>
+              </div>
+              <div class="p-2.5 rounded-lg bg-white dark:bg-surface border border-zinc-200 dark:border-zinc-800">
+                <div class="text-[10px] text-zinc-500">Source $P_S$</div>
+                <div id="outPs" class="text-sm font-bold">500.0 W</div>
+              </div>
+              <div class="p-2.5 rounded-lg bg-white dark:bg-surface border border-zinc-200 dark:border-zinc-800">
+                <div class="text-[10px] text-zinc-500">Load $P_L$ / Loss $\Delta P$</div>
+                <div id="outPl" class="text-sm font-bold">460W / 40W</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ===================================================================== -->
+      <!-- SECTION 1.4: REFERENCE POINT AND REFERENCE DIRECTION -->
+      <!-- ===================================================================== -->
+      <section id="sec-1-4" class="content-card p-5 sm:p-6 rounded-2xl border border-zinc-300 dark:border-zinc-800 bg-white dark:bg-surface space-y-5" data-chapter="ch1" data-tags="ch1 law formula notice example">
+        <div class="flex items-start justify-between gap-3 border-b border-zinc-200 dark:border-zinc-800 pb-3">
+          <div>
+            <span class="text-xs font-mono text-emerald-700 dark:text-limeAccent font-semibold">SECTION 1.4 • PAGES 23–25</span>
+            <h3 class="text-lg sm:text-xl font-bold mt-0.5">Reference Point and Reference Direction</h3>
+          </div>
+          <label class="flex items-center gap-2 text-xs font-mono cursor-pointer select-none">
+            <input type="checkbox" class="mastery-chk w-4 h-4 accent-limeAccent rounded" data-id="r-1-4" />
+            <span>Mastered</span>
+          </label>
+        </div>
+
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-4">
+          <!-- 1.4.1 Reference Point -->
+          <div class="p-4 rounded-xl border border-zinc-200 dark:border-zinc-800 bg-zinc-50 dark:bg-obsidian/60 space-y-2.5">
+            <div class="text-xs font-mono font-bold text-emerald-700 dark:text-limeAccent">1.4.1 REFERENCE POINT (GROUND = $0\text{V}$)</div>
+            <ul class="text-xs sm:text-sm space-y-1.5">
+              <li>• Electric potential is relative and meaningful <strong>only when a reference point is given</strong>.</li>
+              <li>• The reference point is assigned potential $0\text{V}$ and called <strong>ground</strong> ($\perp\!\!\!\perp$).</li>
+              <li>• Voltage between any two nodes $a, b$ equals their potential difference: $U_{ab} = V_a - V_b$.</li>
+            </ul>
+            <div class="p-3 rounded-lg bg-white dark:bg-surface border border-zinc-200 dark:border-zinc-700 text-xs space-y-1.5">
+              <div><strong>Worked Ex 1.4A:</strong> $10\text{V}$ source in series with $4\Omega$ ($a\to b$), $3\Omega$ ($b\to c$), $3\Omega$ ($c\to d$). Without ground, $V_a, V_b, V_c$ cannot be determined. With $d$ grounded ($V_d=0\text{V}$): $I = 10/(4+3+3) = 1\text{A} \implies V_a = 10\text{V}, V_b = 6\text{V}, V_c = 3\text{V}$.</div>
+              <div><strong>Worked Ex 1.4B:</strong> Two equal resistors $R$ in series between $a$ ($V_a = 12\text{V}$) and $b$ ($V_b = -10\text{V}$), midpoint $c$:
+                <span class="font-mono block mt-1">$V_c = \dfrac{1}{2}(V_a - V_b) + V_b = \dfrac{1}{2}(12 - (-10)) - 10 = \mathbf{1\text{V}}$</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- 1.4.2 Reference Direction -->
+          <div class="p-4 rounded-xl border border-zinc-200 dark:border-zinc-800 bg-zinc-50 dark:bg-obsidian/60 space-y-2.5">
+            <div class="text-xs font-mono font-bold text-emerald-700 dark:text-limeAccent">1.4.2 REFERENCE DIRECTION &amp; SIGN INTERPRETATION</div>
+            <ul class="text-xs sm:text-sm space-y-1.5">
+              <li>• <strong>Assumed Direction:</strong> Arbitrarily assigned before analysis so algebraic equations can be written.</li>
+              <li>• <strong>Sign Rule:</strong> If calculated value is <strong>positive ($>0$)</strong>, actual direction matches reference direction; if <strong>negative ($<0$)</strong>, actual direction is opposite to reference direction.</li>
+              <li>• <strong>3 Voltage Representations:</strong> (1) Arrow (from $+$ to $-$), (2) Polarity signs ($+$ and $-$), (3) Double subscripts ($U_{AB}$ = potential drop from $A$ to $B$).</li>
+            </ul>
+            <div class="p-3 rounded-lg bg-amber-50 dark:bg-amber-950/30 border border-amber-400/40 text-xs">
+              <strong>Associated Reference Direction Rule:</strong> When voltage and current have the <em>same reference direction</em> ($I$ enters $+$ terminal of $U$), Ohm's law for a resistor is $U = RI$. If opposite, $U = -RI$.
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ===================================================================== -->
+      <!-- SECTION 1.5: IDEAL CIRCUIT ELEMENTS & POWER ABSORBED/SUPPLIED -->
+      <!-- ===================================================================== -->
+      <section id="sec-1-5" class="content-card p-5 sm:p-6 rounded-2xl border border-zinc-300 dark:border-zinc-800 bg-white dark:bg-surface space-y-5" data-chapter="ch1" data-tags="ch1 law formula notice example">
+        <div class="flex items-start justify-between gap-3 border-b border-zinc-200 dark:border-zinc-800 pb-3">
+          <div>
+            <span class="text-xs font-mono text-emerald-700 dark:text-limeAccent font-semibold">SECTION 1.5 • PAGES 26–30</span>
+            <h3 class="text-lg sm:text-xl font-bold mt-0.5">Ideal Circuit Elements &amp; Power Absorbed vs. Supplied Rule</h3>
+          </div>
+          <label class="flex items-center gap-2 text-xs font-mono cursor-pointer select-none">
+            <input type="checkbox" class="mastery-chk w-4 h-4 accent-limeAccent rounded" data-id="r-1-5" />
+            <span>Mastered</span>
+          </label>
+        </div>
+
+        <!-- Passive vs Active Elements -->
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-4">
+          <div class="p-4 rounded-xl border border-zinc-200 dark:border-zinc-800 bg-zinc-50 dark:bg-obsidian/60 space-y-2">
+            <div class="text-xs font-mono font-bold text-emerald-700 dark:text-limeAccent">1.5.1 IDEAL PASSIVE ELEMENTS (ASSOCIATED REF. DIR.)</div>
+            <div class="space-y-2 text-xs sm:text-sm">
+              <div class="p-2.5 rounded-lg bg-white dark:bg-surface border border-zinc-200 dark:border-zinc-700 flex justify-between items-center">
+                <span><strong>Resistor ($R$):</strong> Dissipates electrical energy</span>
+                <span class="font-mono font-bold">$U = I R$</span>
+              </div>
+              <div class="p-2.5 rounded-lg bg-white dark:bg-surface border border-zinc-200 dark:border-zinc-700 flex justify-between items-center">
+                <span><strong>Inductor ($L$):</strong> Stores magnetic energy</span>
+                <span class="font-mono font-bold">$u = -e = L \dfrac{di}{dt}$</span>
+              </div>
+              <div class="p-2.5 rounded-lg bg-white dark:bg-surface border border-zinc-200 dark:border-zinc-700 flex justify-between items-center">
+                <span><strong>Capacitor ($C$):</strong> Stores electric energy</span>
+                <span class="font-mono font-bold">$i = \dfrac{dq}{dt} = C \dfrac{du}{dt}$</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="p-4 rounded-xl border border-zinc-200 dark:border-zinc-800 bg-zinc-50 dark:bg-obsidian/60 space-y-2">
+            <div class="text-xs font-mono font-bold text-emerald-700 dark:text-limeAccent">1.5.2 IDEAL ACTIVE ELEMENTS</div>
+            <div class="space-y-2 text-xs sm:text-sm">
+              <div class="p-2.5 rounded-lg bg-white dark:bg-surface border border-zinc-200 dark:border-zinc-700">
+                <strong>Ideal Voltage Source ($U_S$):</strong> Terminal voltage $U = U_S = \text{const.}$ (independent of current); current $I$ is determined by external circuit.
+                <div class="text-xs text-zinc-500 mt-1 font-mono">Ex: $U_S=10\text{V}$ with $R_1=2\Omega \implies I=5\text{A}$; with $2\Omega \parallel 2\Omega \implies I=10\text{A}$.</div>
+              </div>
+              <div class="p-2.5 rounded-lg bg-white dark:bg-surface border border-zinc-200 dark:border-zinc-700">
+                <strong>Ideal Current Source ($I_S$):</strong> Output current $I = I_S = \text{const.}$ (independent of terminal voltage); terminal voltage $U$ is determined by external circuit.
+                <div class="text-xs text-zinc-500 mt-1 font-mono">Ex: $I_S=1\text{A}$ with $R=1\Omega \implies U=1\text{V}$; with $R=10\Omega \implies U=10\text{V}$.</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 1.5.3 Power Rule & All 5 Worked Examples (Pages 27-29) -->
+        <div class="p-4 rounded-xl border border-amber-400/50 bg-amber-50/70 dark:bg-amber-950/20 space-y-3">
+          <div class="flex flex-wrap items-center justify-between gap-2">
+            <div class="text-xs font-mono font-bold uppercase text-amber-800 dark:text-amber-300">
+              1.5.3 CRITICAL RULE: POWER ABSORBED VS. POWER SUPPLIED (PAGES 27–29)
+            </div>
+            <span class="text-xs font-mono font-bold px-2 py-0.5 rounded bg-amber-200 dark:bg-amber-900/60 text-amber-900 dark:text-amber-200">
+              Not all sources supply power!
+            </span>
+          </div>
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs sm:text-sm">
+            <div class="p-3 rounded-lg bg-white dark:bg-surface border border-zinc-200 dark:border-zinc-800">
+              <strong>Same Direction (Associated):</strong> When $U$ and $I$ have the <em>same</em> reference direction ($I$ enters $+$ terminal), the element <strong>absorbs power</strong> ($P = UI > 0$ absorbed).
+            </div>
+            <div class="p-3 rounded-lg bg-white dark:bg-surface border border-zinc-200 dark:border-zinc-800">
+              <strong>Opposite Direction (Non-Associated):</strong> When $U$ and $I$ have <em>opposite</em> reference directions ($I$ leaves $+$ terminal), the element <strong>supplies power</strong> ($P = UI > 0$ supplied).
+            </div>
+          </div>
+
+          <!-- All 5 Worked Examples Table -->
+          <div class="overflow-x-auto rounded-xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-surface">
+            <table class="w-full text-left text-xs border-collapse">
+              <thead>
+                <tr class="bg-zinc-100 dark:bg-zinc-900 font-mono border-b border-zinc-200 dark:border-zinc-800">
+                  <th class="p-2.5">Example (pp. 27–29)</th>
+                  <th class="p-2.5">Circuit Configuration</th>
+                  <th class="p-2.5">Current &amp; Voltage Analysis</th>
+                  <th class="p-2.5">Power Balance ($P_{\text{supplied}} = P_{\text{absorbed}}$)</th>
+                </tr>
+              </thead>
+              <tbody class="divide-y divide-zinc-200 dark:divide-zinc-800 font-mono">
+                <tr>
+                  <td class="p-2.5 font-bold">Ex 1.5-1</td>
+                  <td class="p-2.5">$3\text{A}$ source $\parallel 3\text{V}$ source</td>
+                  <td class="p-2.5">$U = 3\text{V}$; $3\text{A}$ enters $+$ of $3\text{V}$ source</td>
+                  <td class="p-2.5">$3\text{A}$ supplies $9\text{W}$; $3\text{V}$ <strong>absorbs</strong> $9\text{W}$</td>
+                </tr>
+                <tr>
+                  <td class="p-2.5 font-bold">Ex 1.5-2</td>
+                  <td class="p-2.5">$3\text{A} \parallel 1\Omega \parallel 3\text{V}$ source</td>
+                  <td class="p-2.5">$I_R = 3\text{V}/1\Omega = 3\text{A} \implies I_{3\text{V}} = 0\text{A}$</td>
+                  <td class="p-2.5">$3\text{A}$ supplies $9\text{W}$; $1\Omega$ absorbs $9\text{W}$; $3\text{V}$ has $P=0\text{W}$</td>
+                </tr>
+                <tr>
+                  <td class="p-2.5 font-bold">Ex 1.5-3</td>
+                  <td class="p-2.5">$3\text{A} \parallel 0.5\Omega \parallel 3\text{V}$ source</td>
+                  <td class="p-2.5">$I_R = 3\text{V}/0.5\Omega = 6\text{A} \implies I_{3\text{V}} = 3\text{A}$ (out of $+$)</td>
+                  <td class="p-2.5">Both $3\text{A}$ ($9\text{W}$) &amp; $3\text{V}$ ($9\text{W}$) <strong>supply</strong>; $0.5\Omega$ absorbs $18\text{W}$</td>
+                </tr>
+                <tr>
+                  <td class="p-2.5 font-bold">Ex 1.5-4</td>
+                  <td class="p-2.5">$3\text{A} \parallel 2\Omega \parallel 3\text{V}$ source</td>
+                  <td class="p-2.5">$I_R = 3\text{V}/2\Omega = 1.5\text{A} \implies I_{3\text{V}} = 1.5\text{A}$ (into $+$)</td>
+                  <td class="p-2.5">$3\text{A}$ supplies $9\text{W}$; $2\Omega$ absorbs $4.5\text{W}$; $3\text{V}$ <strong>absorbs</strong> $4.5\text{W}$</td>
+                </tr>
+                <tr>
+                  <td class="p-2.5 font-bold">Ex 1.5-5</td>
+                  <td class="p-2.5">$3\text{A}$ in series with $1\Omega$ &amp; $3\text{V}$</td>
+                  <td class="p-2.5">$I = 3\text{A}$; $U_{3\text{A}} = 3 + 3(1) = 6\text{V}$</td>
+                  <td class="p-2.5">$3\text{A}$ supplies $18\text{W}$; $1\Omega$ absorbs $9\text{W}$; $3\text{V}$ <strong>absorbs</strong> $9\text{W}$</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <!-- ===================================================================== -->
+      <!-- SECTION 1.6: PRACTICAL SOURCES & EQUIVALENT SOURCE TRANSFORMATION -->
+      <!-- ===================================================================== -->
+      <section id="sec-1-6" class="content-card p-5 sm:p-6 rounded-2xl border border-zinc-300 dark:border-zinc-800 bg-white dark:bg-surface space-y-5" data-chapter="ch1" data-tags="ch1 law formula notice example">
+        <div class="flex items-start justify-between gap-3 border-b border-zinc-200 dark:border-zinc-800 pb-3">
+          <div>
+            <span class="text-xs font-mono text-emerald-700 dark:text-limeAccent font-semibold">SECTION 1.6 • PAGES 31–38</span>
+            <h3 class="text-lg sm:text-xl font-bold mt-0.5">Practical Sources &amp; Equivalent Source Transformation (ST)</h3>
+          </div>
+          <label class="flex items-center gap-2 text-xs font-mono cursor-pointer select-none">
+            <input type="checkbox" class="mastery-chk w-4 h-4 accent-limeAccent rounded" data-id="r-1-6" />
+            <span>Mastered</span>
+          </label>
+        </div>
+
+        <!-- Practical Models & 5 Rules -->
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-4">
+          <div class="p-4 rounded-xl border border-zinc-200 dark:border-zinc-800 bg-zinc-50 dark:bg-obsidian/60 space-y-2.5">
+            <div class="text-xs font-mono font-bold text-emerald-700 dark:text-limeAccent">1.6.1 &amp; 1.6.2 PRACTICAL SOURCE MODELS</div>
+            <div class="p-3 rounded-lg bg-white dark:bg-surface border border-zinc-200 dark:border-zinc-700 text-xs sm:text-sm space-y-1">
+              <div><strong>Practical Voltage Source:</strong> Ideal voltage source $U_S$ in <em>series</em> with $R_0$:</div>
+              <div class="font-mono">$U = U_S - I R_0 \neq \text{const.}$</div>
+            </div>
+            <div class="p-3 rounded-lg bg-white dark:bg-surface border border-zinc-200 dark:border-zinc-700 text-xs sm:text-sm space-y-1">
+              <div><strong>Practical Current Source:</strong> Ideal current source $I_S$ in <em>parallel</em> with $R_0$:</div>
+              <div class="font-mono">$I = I_S - \dfrac{U}{R_0} \neq \text{const.}$</div>
+            </div>
+            <div class="p-3 rounded-lg bg-white dark:bg-surface border border-zinc-200 dark:border-zinc-700 text-xs space-y-1">
+              <div class="font-bold">1.6.3 Equivalence Formulas &amp; Current Divider:</div>
+              <div class="font-mono">
+                • $V \to I$: $I_S = \dfrac{U_S}{R}, \quad R' = R$ (series $\to$ parallel)<br/>
+                • $I \to V$: $U_S = I_S R, \quad R' = R$ (parallel $\to$ series)<br/>
+                • Current Divider: $I_1 = \dfrac{R_2}{R_1 + R_2} I, \quad I_2 = \dfrac{R_1}{R_1 + R_2} I$
+              </div>
+            </div>
+          </div>
+
+          <div class="p-4 rounded-xl border border-zinc-200 dark:border-zinc-800 bg-zinc-50 dark:bg-obsidian/60 space-y-2.5">
+            <div class="text-xs font-mono font-bold text-emerald-700 dark:text-limeAccent">ALL 5 SOURCE TRANSFORMATION Q&amp;A RULES &amp; REDUNDANCY LAWS</div>
+            <ol class="text-xs sm:text-sm space-y-1.5 list-decimal list-inside">
+              <li><strong>What is ST?</strong> Replacing a practical voltage source by an equivalent practical current source (or vice versa).</li>
+              <li><strong>Purpose:</strong> Simplify multi-source circuit calculations.</li>
+              <li><strong>3 Conditions / Restrictions:</strong>
+                <ul class="pl-5 list-disc text-xs text-zinc-600 dark:text-zinc-300 mt-0.5 space-y-0.5">
+                  <li>Only valid for <strong>practical</strong> sources, <strong>NOT ideal</strong> sources ($R=0$ or $R=\infty$).</li>
+                  <li>Equivalent <strong>only for the external circuit</strong>, <strong>NOT for the inside</strong> of the source itself.</li>
+                  <li><strong>Keep reference direction consistent:</strong> The current source arrow points toward the $+$ polarity of the equivalent voltage source.</li>
+                </ul>
+              </li>
+              <li><strong>Special Redundancy Rules (Page 35):</strong>
+                <ul class="pl-5 list-disc text-xs text-zinc-600 dark:text-zinc-300 mt-0.5 space-y-0.5">
+                  <li>Any branch in <strong>parallel with an ideal voltage source</strong> has <em>no influence</em> on the external circuit (can be removed for external analysis).</li>
+                  <li>Any branch in <strong>series with an ideal current source</strong> has <em>no influence</em> on the external circuit (can be shorted/removed for external analysis).</li>
+                </ul>
+              </li>
+            </ol>
+          </div>
+        </div>
+
+        <!-- Worked Examples A, B, C (Pages 34-38) -->
+        <div class="p-4 rounded-xl border border-zinc-200 dark:border-zinc-800 bg-zinc-50 dark:bg-obsidian/60 space-y-3">
+          <div class="text-xs font-mono font-bold text-emerald-700 dark:text-limeAccent">WORKED EXAMPLES — SECTION 1.6 (PAGES 34–38)</div>
+          <div class="grid grid-cols-1 md:grid-cols-3 gap-3 text-xs">
+            <div class="p-3 rounded-lg bg-white dark:bg-surface border border-zinc-200 dark:border-zinc-700 space-y-1.5">
+              <div class="font-bold">Ex 1.6A (Page 34)</div>
+              <p>$10\text{V}$ in series with $2\Omega$ connected to $3\Omega$ load:</p>
+              <p class="font-mono">Convert to $5\text{A} \parallel 2\Omega \parallel 3\Omega \implies I = \dfrac{2}{2+3}\times 5\text{A} = \mathbf{2\text{A}}$.</p>
+            </div>
+            <div class="p-3 rounded-lg bg-white dark:bg-surface border border-zinc-200 dark:border-zinc-700 space-y-1.5">
+              <div class="font-bold">Ex 1.6B: Multi-Step ST (Pages 35–37)</div>
+              <p>$5\text{V}$ with $2\text{k}\Omega$, $\parallel 1\text{k}\Omega$, $\parallel (2\text{mA} + \text{series } 2\text{k}\Omega)$, feeding $(1\text{k}\Omega + 2\text{k}\Omega)$:</p>
+              <p class="font-mono">1) Drop $2\text{k}\Omega$ in series with $2\text{mA}$.<br/>2) $5\text{V}/2\text{k}\Omega \to 2.5\text{mA}\parallel 2\text{k}\Omega$.<br/>3) Combine $2.5+2 = 4.5\text{mA}$; $2\text{k}\Omega\parallel 1\text{k}\Omega = \frac{2}{3}\text{k}\Omega$.<br/>4) $I = \dfrac{2/3}{2/3 + 3}\times 4.5\text{mA} = \mathbf{\dfrac{9}{11}\text{mA} \approx 0.818\text{mA}}$.</p>
+            </div>
+            <div class="p-3 rounded-lg bg-white dark:bg-surface border border-zinc-200 dark:border-zinc-700 space-y-1.5">
+              <div class="font-bold">Ex 1.6C: Review Problem (Page 38)</div>
+              <p>$(40\text{V}, 2\Omega) \parallel (20\text{V}, 2\Omega)$ feeding $4\Omega$ load:</p>
+              <p class="font-mono">Convert to $(20\text{A}\parallel 2\Omega) \parallel (10\text{A}\parallel 2\Omega) \to 30\text{A}\parallel 1\Omega \to 30\text{V}$ in series with $1\Omega + 4\Omega \implies I = \dfrac{30}{5} = \mathbf{6\text{A}}$.</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- INTERACTIVE SIMULATOR 2: Source Transformation Converter -->
+        <div id="sim-st" class="p-4 sm:p-5 rounded-xl border-2 border-emerald-600/40 dark:border-limeAccent/40 bg-zinc-100/80 dark:bg-obsidian space-y-3">
+          <div class="flex flex-wrap items-center justify-between gap-2">
+            <div>
+              <span class="px-2 py-0.5 rounded bg-obsidian text-limeAccent dark:bg-limeAccent dark:text-obsidian font-mono text-[10px] font-bold">INTERACTIVE CONVERTER</span>
+              <h4 class="font-bold text-sm sm:text-base mt-1">Practical Voltage Source $\leftrightarrow$ Practical Current Source</h4>
+            </div>
+            <div class="flex gap-1.5 font-mono text-xs">
+              <button onclick="setStMode('v2i')" id="btnStV2I" class="px-2.5 py-1 rounded-lg bg-obsidian text-limeAccent dark:bg-limeAccent dark:text-obsidian font-bold">Voltage &rarr; Current</button>
+              <button onclick="setStMode('i2v')" id="btnStI2V" class="px-2.5 py-1 rounded-lg bg-zinc-300 dark:bg-zinc-800">Current &rarr; Voltage</button>
+            </div>
+          </div>
+          <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 items-center font-mono text-xs">
+            <div class="space-y-2">
+              <label class="block">
+                <span id="stInputLabel" class="text-zinc-500">Input $U_S$ (V):</span>
+                <input type="number" id="stInputVal" value="10" step="0.5" oninput="calcST()" class="mt-1 w-full px-3 py-1.5 rounded-lg border border-zinc-300 dark:border-zinc-700 bg-white dark:bg-surface" />
+              </label>
+              <label class="block">
+                <span class="text-zinc-500">Internal Resistance $R$ ($\Omega$):</span>
+                <input type="number" id="stResVal" value="2" min="0.1" step="0.5" oninput="calcST()" class="mt-1 w-full px-3 py-1.5 rounded-lg border border-zinc-300 dark:border-zinc-700 bg-white dark:bg-surface" />
+              </label>
+              <label class="block">
+                <span class="text-zinc-500">External Load $R_L$ ($\Omega$):</span>
+                <input type="number" id="stLoadVal" value="3" min="0" step="0.5" oninput="calcST()" class="mt-1 w-full px-3 py-1.5 rounded-lg border border-zinc-300 dark:border-zinc-700 bg-white dark:bg-surface" />
+              </label>
+            </div>
+            <div class="sm:col-span-2 p-4 rounded-xl bg-white dark:bg-surface border border-zinc-200 dark:border-zinc-800 space-y-2">
+              <div id="stResultTitle" class="font-bold text-emerald-700 dark:text-limeAccent text-sm">Equivalent Practical Current Source:</div>
+              <div id="stResultEq" class="text-sm">$I_S = U_S / R = 10 / 2 = \mathbf{5.00\text{ A}}$ in parallel with $R' = \mathbf{2.00\ \Omega}$</div>
+              <div id="stExternalCheck" class="text-xs text-zinc-600 dark:text-zinc-300 pt-1 border-t border-zinc-200 dark:border-zinc-800">
+                External Load Verification ($R_L = 3\Omega$): Load Current $I_L = \mathbf{2.00\text{ A}}$, Load Voltage $U_L = \mathbf{6.00\text{ V}}$ (Identical in both models!)
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ===================================================================== -->
+      <!-- SECTION 1.7: KIRCHHOFF'S LAWS (KCL & KVL) -->
+      <!-- ===================================================================== -->
+      <section id="sec-1-7" class="content-card p-5 sm:p-6 rounded-2xl border border-zinc-300 dark:border-zinc-800 bg-white dark:bg-surface space-y-5" data-chapter="ch1" data-tags="ch1 law formula notice example">
+        <div class="flex items-start justify-between gap-3 border-b border-zinc-200 dark:border-zinc-800 pb-3">
+          <div>
+            <span class="text-xs font-mono text-emerald-700 dark:text-limeAccent font-semibold">SECTION 1.7 • PAGES 39–53</span>
+            <h3 class="text-lg sm:text-xl font-bold mt-0.5">Kirchhoff's Laws: Topology, KCL, and KVL</h3>
+          </div>
+          <label class="flex items-center gap-2 text-xs font-mono cursor-pointer select-none">
+            <input type="checkbox" class="mastery-chk w-4 h-4 accent-limeAccent rounded" data-id="r-1-7" />
+            <span>Mastered</span>
+          </label>
+        </div>
+
+        <!-- Topology Terms & All 4 Counting Exercises -->
+        <div class="p-4 rounded-xl border border-zinc-200 dark:border-zinc-800 bg-zinc-50 dark:bg-obsidian/60 space-y-3">
+          <div class="text-xs font-mono font-bold text-emerald-700 dark:text-limeAccent">CIRCUIT TOPOLOGY DEFINITIONS &amp; ALL 4 COUNTING EXERCISES (PAGES 40–42)</div>
+          <div class="grid grid-cols-2 sm:grid-cols-4 gap-2 text-xs">
+            <div class="p-2.5 rounded-lg bg-white dark:bg-surface border border-zinc-200 dark:border-zinc-700">
+              <strong>Node ($N$):</strong> Point where $\ge 3$ elements meet.
+            </div>
+            <div class="p-2.5 rounded-lg bg-white dark:bg-surface border border-zinc-200 dark:border-zinc-700">
+              <strong>Branch ($B$):</strong> Circuit path between two nodes.
+            </div>
+            <div class="p-2.5 rounded-lg bg-white dark:bg-surface border border-zinc-200 dark:border-zinc-700">
+              <strong>Loop ($L$):</strong> Any closed path in a circuit.
+            </div>
+            <div class="p-2.5 rounded-lg bg-white dark:bg-surface border border-zinc-200 dark:border-zinc-700">
+              <strong>Mesh ($M$):</strong> Independent loop with no inner loops ($M = B - N + 1$).
+            </div>
+          </div>
+          <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-2 font-mono text-xs">
+            <div class="p-2.5 rounded-lg bg-white dark:bg-surface border border-zinc-200 dark:border-zinc-700">
+              <div class="font-bold">Topology Ex 1:</div>
+              <div>3-branch parallel circuit</div>
+              <div class="text-emerald-700 dark:text-limeAccent font-bold mt-1">N=2, B=3, L=3, M=2</div>
+            </div>
+            <div class="p-2.5 rounded-lg bg-white dark:bg-surface border border-zinc-200 dark:border-zinc-700">
+              <div class="font-bold">Topology Ex 2:</div>
+              <div>4-branch parallel circuit</div>
+              <div class="text-emerald-700 dark:text-limeAccent font-bold mt-1">N=2, B=4, L=6, M=3</div>
+            </div>
+            <div class="p-2.5 rounded-lg bg-white dark:bg-surface border border-zinc-200 dark:border-zinc-700">
+              <div class="font-bold">Topology Ex 3:</div>
+              <div>Bridge + bottom source</div>
+              <div class="text-emerald-700 dark:text-limeAccent font-bold mt-1">N=4, B=6, L=7, M=3</div>
+            </div>
+            <div class="p-2.5 rounded-lg bg-white dark:bg-surface border border-zinc-200 dark:border-zinc-700">
+              <div class="font-bold">Topology Ex 4:</div>
+              <div>Two-source $R_1..R_5$ net</div>
+              <div class="text-emerald-700 dark:text-limeAccent font-bold mt-1">N=3, B=5, L=6, M=3</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- KCL & KVL Cards -->
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-4">
+          <!-- 1.7.1 KCL -->
+          <div class="p-4 rounded-xl border border-zinc-200 dark:border-zinc-800 bg-zinc-50 dark:bg-obsidian/60 space-y-2.5">
+            <div class="text-xs font-mono font-bold text-emerald-700 dark:text-limeAccent">1.7.1 KIRCHHOFF'S CURRENT LAW (KCL)</div>
+            <p class="text-xs sm:text-sm">The algebraic sum of currents entering a node (or closed boundary) is zero at any instant:</p>
+            <div class="p-2.5 rounded-lg bg-white dark:bg-surface border border-zinc-200 dark:border-zinc-700 font-mono text-xs text-center">
+              $$\sum i = 0 \quad \Longleftrightarrow \quad \sum I_{\text{in}} = \sum I_{\text{out}}$$
+            </div>
+            <ul class="text-xs space-y-1 text-zinc-600 dark:text-zinc-300">
+              <li>• <strong>Generalized KCL (Closed Surface):</strong> Applies to any closed boundary (e.g., BJT transistor $I_E = I_B + I_C$, $\Delta$-network $I_1 + I_2 = I_3$, or 4-node subcircuit $I_1+I_2+I_3+I_4 = 0$).</li>
+              <li>• <strong>Node A Example:</strong> $I_1, I_3$ entering; $I_2, I_4, I_5$ leaving $\implies I_1 + I_3 - I_2 - I_4 - I_5 = 0$.</li>
+            </ul>
+          </div>
+
+          <!-- 1.7.2 KVL -->
+          <div class="p-4 rounded-xl border border-zinc-200 dark:border-zinc-800 bg-zinc-50 dark:bg-obsidian/60 space-y-2.5">
+            <div class="text-xs font-mono font-bold text-emerald-700 dark:text-limeAccent">1.7.2 KIRCHHOFF'S VOLTAGE LAW (KVL)</div>
+            <p class="text-xs sm:text-sm">The algebraic sum of all voltages around any closed loop (or imaginary open-terminal loop) is zero:</p>
+            <div class="p-2.5 rounded-lg bg-white dark:bg-surface border border-zinc-200 dark:border-zinc-700 font-mono text-xs text-center">
+              $$\sum u = 0 \quad (\text{or } \sum U = 0)$$
+            </div>
+            <ul class="text-xs space-y-1 text-zinc-600 dark:text-zinc-300">
+              <li>• <strong>Sign Rule:</strong> Choose clockwise/CCW traversal. Voltage drops ($+$ to $-$) in traversal direction take $+$, rises ($-$ to $+$) take $-$.</li>
+              <li>• <strong>Ex E1 &amp; E2:</strong> $U_1 - U_2 + U_3 - U_4 = 0$; Two-source loop: $U_{S2} + R_2 I_2 + R_1 I_1 - U_{S1} = 0$.</li>
+              <li>• <strong>Ex E3 (Imaginary/Open-Terminal Loop):</strong>
+                <span class="font-mono block mt-0.5">If $I$ flows down through $R$: $U_S + RI - U = 0 \implies U = U_S + RI$.<br/>If $I$ flows up through $R$: $U_S - RI - U = 0 \implies U = U_S - RI$.</span>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      <!-- ===================================================================== -->
+      <!-- SECTION 1.8: BRANCH CURRENT ANALYSIS (BCA) -->
+      <!-- ===================================================================== -->
+      <section id="sec-1-8" class="content-card p-5 sm:p-6 rounded-2xl border border-zinc-300 dark:border-zinc-800 bg-white dark:bg-surface space-y-4" data-chapter="ch1" data-tags="ch1 law formula example">
+        <div class="flex items-start justify-between gap-3 border-b border-zinc-200 dark:border-zinc-800 pb-3">
+          <div>
+            <span class="text-xs font-mono text-emerald-700 dark:text-limeAccent font-semibold">SECTION 1.8 • PAGES 54–60</span>
+            <h3 class="text-lg sm:text-xl font-bold mt-0.5">Branch Current Analysis (BCA)</h3>
+          </div>
+          <label class="flex items-center gap-2 text-xs font-mono cursor-pointer select-none">
+            <input type="checkbox" class="mastery-chk w-4 h-4 accent-limeAccent rounded" data-id="r-1-8" />
+            <span>Mastered</span>
+          </label>
+        </div>
+
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-4">
+          <div class="p-4 rounded-xl border border-zinc-200 dark:border-zinc-800 bg-zinc-50 dark:bg-obsidian/60 space-y-2">
+            <div class="text-xs font-mono font-bold text-emerald-700 dark:text-limeAccent">4 MANDATORY STEPS FOR BRANCH CURRENT ANALYSIS</div>
+            <ol class="text-xs sm:text-sm space-y-1.5 list-decimal list-inside">
+              <li><strong>Directions:</strong> Assign reference directions to all $B$ branch currents and choose loop traversal directions.</li>
+              <li><strong>KCL Equations:</strong> Write KCL equations for the <strong>$(N - 1)$ independent nodes</strong>.</li>
+              <li><strong>KVL Equations:</strong> Write KVL equations for the <strong>$M = B - (N - 1)$ independent loops/meshes</strong>.</li>
+              <li><strong>Solve:</strong> Solve the linear system of $B$ independent equations for all $B$ branch currents.</li>
+            </ol>
+          </div>
+          <div class="p-4 rounded-xl border border-zinc-200 dark:border-zinc-800 bg-zinc-50 dark:bg-obsidian/60 space-y-2">
+            <div class="text-xs font-mono font-bold text-emerald-700 dark:text-limeAccent">WORKED EXAMPLE 1.8 (PAGES 57–59: $N=3, B=5, M=3$)</div>
+            <div class="text-xs space-y-1 font-mono bg-white dark:bg-surface p-3 rounded-lg border border-zinc-200 dark:border-zinc-700">
+              <div class="font-bold text-zinc-500">// 2 Independent KCL Equations (N - 1 = 2):</div>
+              <div>Node 1: $I_1 - I_3 - I_5 = 0$</div>
+              <div>Node 2: $I_5 + I_2 - I_4 = 0$</div>
+              <div class="text-zinc-400">(Node 3: $I_3 + I_4 - I_1 - I_2 = 0$ is dependent)</div>
+              <div class="font-bold text-zinc-500 pt-1">// 3 Independent Mesh KVL Equations (M = 3):</div>
+              <div>Mesh 1: $I_3 R_3 + I_1 R_1 - U_{S1} = 0$</div>
+              <div>Mesh 2: $I_5 R_5 + I_4 R_4 - I_3 R_3 = 0$</div>
+              <div>Mesh 3: $U_{S2} - I_2 R_2 - I_4 R_4 = 0$</div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ===================================================================== -->
+      <!-- SECTION 1.9: SUPERPOSITION THEOREM -->
+      <!-- ===================================================================== -->
+      <section id="sec-1-9" class="content-card p-5 sm:p-6 rounded-2xl border border-zinc-300 dark:border-zinc-800 bg-white dark:bg-surface space-y-5" data-chapter="ch1" data-tags="ch1 law formula notice example">
+        <div class="flex items-start justify-between gap-3 border-b border-zinc-200 dark:border-zinc-800 pb-3">
+          <div>
+            <span class="text-xs font-mono text-emerald-700 dark:text-limeAccent font-semibold">SECTION 1.9 • PAGES 61–67</span>
+            <h3 class="text-lg sm:text-xl font-bold mt-0.5">Superposition Theorem</h3>
+          </div>
+          <label class="flex items-center gap-2 text-xs font-mono cursor-pointer select-none">
+            <input type="checkbox" class="mastery-chk w-4 h-4 accent-limeAccent rounded" data-id="r-1-9" />
+            <span>Mastered</span>
+          </label>
+        </div>
+
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-4">
+          <div class="p-4 rounded-xl border border-zinc-200 dark:border-zinc-800 bg-zinc-50 dark:bg-obsidian/60 space-y-2.5">
+            <div class="text-xs font-mono font-bold text-emerald-700 dark:text-limeAccent">THEOREM STATEMENT &amp; SOURCE DEACTIVATION RULES</div>
+            <p class="text-xs sm:text-sm">In any <strong>linear circuit</strong>, the voltage across or current through any element equals the <strong>algebraic sum</strong> of the voltages or currents caused by each independent source acting alone.</p>
+            <div class="p-3 rounded-lg bg-white dark:bg-surface border border-zinc-200 dark:border-zinc-700 text-xs space-y-1">
+              <div class="font-bold">How to Turn Off ("Kill") Other Independent Sources:</div>
+              <div>• <strong>Ideal Voltage Source ($U_S=0$):</strong> Replace by a <strong>short circuit</strong>.</div>
+              <div>• <strong>Ideal Current Source ($I_S=0$):</strong> Replace by an <strong>open circuit</strong>.</div>
+              <div>• <strong>Practical Sources:</strong> Retain their internal resistances $R_0$.</div>
+            </div>
+            <div class="text-xs">
+              <strong>3 Steps:</strong> (1) Keep one source active, deactivate others, solve partial response $I'$ or $U'$; (2) Repeat for each independent source; (3) Sum algebraically respecting reference signs ($I = I' + I'' + \dots$).
+            </div>
+          </div>
+
+          <div class="p-4 rounded-xl border border-amber-400/50 bg-amber-50/70 dark:bg-amber-950/20 space-y-2">
+            <div class="text-xs font-mono font-bold text-amber-800 dark:text-amber-300">4 CRITICAL NOTICES &amp; EXAM TRAPS (PAGE 64)</div>
+            <ol class="text-xs sm:text-sm space-y-1.5 list-decimal list-inside">
+              <li><strong>Linearity Only:</strong> Valid strictly for <em>linear circuits</em> (not diodes/transistors).</li>
+              <li><strong>NEVER Apply to Power ($P \neq P' + P''$):</strong> Power is nonlinear ($P = I^2 R$ or $U^2 / R$). Always find total $I$ or $U$ first, then compute $P = I^2 R$.</li>
+              <li><strong>Reference Direction / Sign:</strong> Assign consistent reference directions; subtract partial terms that oppose the reference direction.</li>
+              <li><strong>Source Grouping:</strong> Sub-circuits can group multiple active sources together if convenient.</li>
+            </ol>
+          </div>
+        </div>
+
+        <!-- Worked Examples E1–E5 (Pages 65-67) -->
+        <div class="p-4 rounded-xl border border-zinc-200 dark:border-zinc-800 bg-zinc-50 dark:bg-obsidian/60 space-y-2.5">
+          <div class="text-xs font-mono font-bold text-emerald-700 dark:text-limeAccent">WORKED EXAMPLES E1–E5 (PAGES 65–67)</div>
+          <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3 text-xs font-mono">
+            <div class="p-3 rounded-lg bg-white dark:bg-surface border border-zinc-200 dark:border-zinc-700">
+              <div class="font-bold">Ex E1 &amp; E2 ($20\text{V}$ &amp; $4\text{A}$ with $10\Omega$ resistors)</div>
+              <div class="mt-1">• E1: $I_1 = I_1' + I_1''$, $I_2 = I_2' + I_2''$, $I_3 = I_3' + I_3''$.<br/>• E2: $20\text{V}$ alone $\implies I' = 2\text{A}$; $4\text{A}$ alone $\implies I'' = -1\text{A} \implies I = 2 + (-1) = \mathbf{1\text{A}}$.</div>
+            </div>
+            <div class="p-3 rounded-lg bg-white dark:bg-surface border border-zinc-200 dark:border-zinc-700">
+              <div class="font-bold">Ex E3 ($7\text{A}$ source &amp; $35\text{V}$ source)</div>
+              <div class="mt-1">• $7\text{A}$ source acting alone $\implies I' = 3\text{A}$.<br/>• $35\text{V}$ source acting alone $\implies I'' = 5\text{A}$.<br/>• Total current $I = 3 + 5 = \mathbf{8\text{A}}$.</div>
+            </div>
+            <div class="p-3 rounded-lg bg-white dark:bg-surface border border-zinc-200 dark:border-zinc-700">
+              <div class="font-bold">Ex E4 &amp; E5 (Page 67)</div>
+              <div class="mt-1">• E4 ($3\text{A}, 5\text{A}, 10\text{V}$): Deactivate each source in turn and sum algebraically.<br/>• E5 ($18\text{V}+1\Omega$, middle $4\Omega$, $9\text{V}+1\Omega$): $18\text{V}$ alone $\implies I' = 2\text{A}$; $9\text{V}$ alone $\implies I'' = 1\text{A} \implies I = \mathbf{3\text{A}}$.</div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ===================================================================== -->
+      <!-- SECTION 1.10: EQUIVALENT SOURCE THEOREM (THÉVENIN & NORTON) -->
+      <!-- ===================================================================== -->
+      <section id="sec-1-10" class="content-card p-5 sm:p-6 rounded-2xl border border-zinc-300 dark:border-zinc-800 bg-white dark:bg-surface space-y-5" data-chapter="ch1" data-tags="ch1 law formula example">
+        <div class="flex items-start justify-between gap-3 border-b border-zinc-200 dark:border-zinc-800 pb-3">
+          <div>
+            <span class="text-xs font-mono text-emerald-700 dark:text-limeAccent font-semibold">SECTION 1.10 • PAGES 68–80</span>
+            <h3 class="text-lg sm:text-xl font-bold mt-0.5">Equivalent Source Theorem: Thévenin's &amp; Norton's Theorems</h3>
+          </div>
+          <label class="flex items-center gap-2 text-xs font-mono cursor-pointer select-none">
+            <input type="checkbox" class="mastery-chk w-4 h-4 accent-limeAccent rounded" data-id="r-1-10" />
+            <span>Mastered</span>
+          </label>
+        </div>
+
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-4">
+          <!-- 1.10.2 Thévenin -->
+          <div class="p-4 rounded-xl border border-zinc-200 dark:border-zinc-800 bg-zinc-50 dark:bg-obsidian/60 space-y-2.5">
+            <div class="text-xs font-mono font-bold text-emerald-700 dark:text-limeAccent">1.10.2 THÉVENIN'S THEOREM</div>
+            <p class="text-xs sm:text-sm">Any active linear two-terminal network can be replaced by an equivalent voltage source $U_{eS} = U_{OC}$ in <strong>series</strong> with an equivalent resistance $R_0$.</p>
+            <div class="p-3 rounded-lg bg-white dark:bg-surface border border-zinc-200 dark:border-zinc-700 text-xs space-y-1.5">
+              <div><strong>1. Find $U_{eS} = U_{OC}$:</strong> Disconnect the load at terminals $a, b$ and compute the open-circuit terminal voltage $U_{ab}$.</div>
+              <div><strong>2. Find $R_0$:</strong>
+                <span class="block pl-2">• <em>Method 1 (Independent sources only):</em> Turn off all internal independent sources (short $U_S$, open $I_S$) and find equivalent resistance looking into $a, b$.</span>
+                <span class="block pl-2">• <em>Method 2 (General):</em> $R_0 = \dfrac{U_{OC}}{I_{SC}}$.</span>
+              </div>
+              <div class="font-mono pt-1 border-t border-zinc-200 dark:border-zinc-700">
+                <strong>Worked Ex (pp. 72–76, Load $R_L=8\Omega$):</strong> $R_0 = 2+2+2 = 6\Omega$; KVL $U_{ab}+5-15-4=0 \implies U_{ab}=14\text{V}$; Load current $I = \dfrac{14}{6+8} = \mathbf{1\text{A}}$.
+              </div>
+            </div>
+          </div>
+
+          <!-- 1.10.3 Norton -->
+          <div class="p-4 rounded-xl border border-zinc-200 dark:border-zinc-800 bg-zinc-50 dark:bg-obsidian/60 space-y-2.5">
+            <div class="text-xs font-mono font-bold text-emerald-700 dark:text-limeAccent">1.10.3 NORTON'S THEOREM</div>
+            <p class="text-xs sm:text-sm">Any active linear two-terminal circuit can be replaced by an equivalent current source $I_{eS} = I_{SC}$ in <strong>parallel</strong> with the equivalent resistance $R_0$.</p>
+            <div class="p-3 rounded-lg bg-white dark:bg-surface border border-zinc-200 dark:border-zinc-700 text-xs space-y-1.5">
+              <div><strong>1. Find $I_{eS} = I_{SC}$:</strong> Short-circuit terminals $a, b$ and compute the short-circuit current $I_{SC}$ flowing from $a$ to $b$.</div>
+              <div><strong>2. Find $R_0$:</strong> Same $R_0$ as Thévenin ($R_0 = U_{OC}/I_{SC}$).</div>
+              <div class="font-mono pt-1 border-t border-zinc-200 dark:border-zinc-700">
+                <strong>Worked Ex (pp. 77–80, Load $R_L=8\Omega$):</strong> $R_0 = 6\Omega$; $I_{eS} = \dfrac{U_{ab}}{R_0} = \dfrac{14}{6}\text{A} = \dfrac{7}{3}\text{A}$; Current divider gives $I = \dfrac{6}{6+8} \times \dfrac{14}{6} = \mathbf{1\text{A}}$.
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ===================================================================== -->
+      <!-- CHAPTER 2 HEADER -->
+      <!-- ===================================================================== -->
+      <div class="pt-4">
+        <div class="flex items-center gap-3">
+          <span class="px-3 py-1 rounded-lg bg-obsidian text-limeAccent dark:bg-limeAccent dark:text-obsidian font-mono font-extrabold text-xs">CHAPTER 02</span>
+          <h2 class="text-xl sm:text-2xl font-extrabold tracking-tight">Transient Analysis of First-Order Circuits</h2>
+        </div>
+        <p class="text-xs font-mono text-zinc-500 dark:text-zinc-400 mt-1">Textbook Pages 81–100 • Sections 2.1 through 2.3 (Switching Law &amp; Three-Element Method)</p>
+      </div>
+
+      <!-- ===================================================================== -->
+      <!-- SECTION 2.1: BASIC CONCEPT OF TRANSIENT ANALYSIS -->
+      <!-- ===================================================================== -->
+      <section id="sec-2-1" class="content-card p-5 sm:p-6 rounded-2xl border border-zinc-300 dark:border-zinc-800 bg-white dark:bg-surface space-y-5" data-chapter="ch2" data-tags="ch2 law formula notice example">
+        <div class="flex items-start justify-between gap-3 border-b border-zinc-200 dark:border-zinc-800 pb-3">
+          <div>
+            <span class="text-xs font-mono text-emerald-700 dark:text-limeAccent font-semibold">SECTION 2.1 • PAGES 82–90</span>
+            <h3 class="text-lg sm:text-xl font-bold mt-0.5">Basic Concepts: Steady State, Transient Process &amp; Energy Storage</h3>
+          </div>
+          <label class="flex items-center gap-2 text-xs font-mono cursor-pointer select-none">
+            <input type="checkbox" class="mastery-chk w-4 h-4 accent-limeAccent rounded" data-id="r-2-1" />
+            <span>Mastered</span>
+          </label>
+        </div>
+
+        <!-- Definitions & Three-Lamp Demonstration -->
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-4">
+          <div class="p-4 rounded-xl border border-zinc-200 dark:border-zinc-800 bg-zinc-50 dark:bg-obsidian/60 space-y-2">
+            <div class="text-xs font-mono font-bold text-emerald-700 dark:text-limeAccent">2.1.1 STEADY STATE, TRANSIENT &amp; SWITCHING</div>
+            <ul class="text-xs sm:text-sm space-y-1.5">
+              <li>• <strong>Steady State:</strong> When circuit structure and parameters are fixed, all currents and voltages remain unchanged (invariable).</li>
+              <li>• <strong>Transient Process:</strong> The transition period from one steady state to a new steady state following a disturbance.</li>
+              <li>• <strong>Switching:</strong> Any sudden change in circuit structure (opening/closing switch), circuit parameters, or power supply.</li>
+            </ul>
+            <div class="p-3 rounded-lg bg-white dark:bg-surface border border-zinc-200 dark:border-zinc-700 text-xs space-y-1">
+              <div class="font-bold">Three-Lamp Demonstration (Switch $S$ closed at $t=0$):</div>
+              <div>• <strong>Lamp $L_1$ (Resistor $R$ branch):</strong> Lights up <em>immediately</em> and brightness stays constant (no transient).</div>
+              <div>• <strong>Lamp $L_2$ (Inductor $L$ branch):</strong> Changes <em>gradually from dark to bright</em>, then glows stably.</div>
+              <div>• <strong>Lamp $L_3$ (Capacitor $C$ branch):</strong> Suddenly flashes <em>brightly</em>, gradually dims, and <em>finally goes out</em> (open circuit in DC steady state).</div>
+            </div>
+          </div>
+
+          <div class="p-4 rounded-xl border border-zinc-200 dark:border-zinc-800 bg-zinc-50 dark:bg-obsidian/60 space-y-2">
+            <div class="text-xs font-mono font-bold text-emerald-700 dark:text-limeAccent">2.1.2 &amp; 2.1.3 ENERGY STORAGE &amp; 2 MANDATORY CONDITIONS</div>
+            <div class="grid grid-cols-2 gap-2 font-mono text-xs">
+              <div class="p-2.5 rounded-lg bg-white dark:bg-surface border border-zinc-200 dark:border-zinc-700">
+                <div class="font-bold">Capacitor Electric Energy</div>
+                <div class="mt-1">$$W_e = \frac{1}{2} C u_C^2$$</div>
+                <div class="text-[11px] text-zinc-500 mt-1">$u_C$ cannot jump abruptly</div>
+              </div>
+              <div class="p-2.5 rounded-lg bg-white dark:bg-surface border border-zinc-200 dark:border-zinc-700">
+                <div class="font-bold">Inductor Magnetic Energy</div>
+                <div class="mt-1">$$W_m = \frac{1}{2} L i_L^2$$</div>
+                <div class="text-[11px] text-zinc-500 mt-1">$i_L$ cannot jump abruptly</div>
+              </div>
+            </div>
+            <div class="p-3 rounded-lg bg-amber-50 dark:bg-amber-950/30 border border-amber-400/40 text-xs space-y-1">
+              <div class="font-bold">Two Required Conditions for a Transient Process to Occur:</div>
+              <div>1. <strong>External Cause:</strong> Switching occurs (change in circuit structure, parameters, or source).</div>
+              <div>2. <strong>Internal Cause:</strong> Presence of energy-storage elements ($C$ or $L$), since stored energy cannot change instantaneously (otherwise $P = dW/dt = \infty$).</div>
+            </div>
+            <div class="text-xs text-zinc-600 dark:text-zinc-300">
+              <strong>2.1.4 Applications &amp; Hazards:</strong> Used in RC time-delay circuits, high-voltage pulse/lightning generators, and fluorescent lamp starters (ballast $L$ + starter). Must protect equipment against transient over-voltage and over-current spikes.
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ===================================================================== -->
+      <!-- SECTION 2.2: SWITCHING LAW (COMMUTATION LAW) -->
+      <!-- ===================================================================== -->
+      <section id="sec-2-2" class="content-card p-5 sm:p-6 rounded-2xl border border-zinc-300 dark:border-zinc-800 bg-white dark:bg-surface space-y-5" data-chapter="ch2" data-tags="ch2 law formula notice example">
+        <div class="flex items-start justify-between gap-3 border-b border-zinc-200 dark:border-zinc-800 pb-3">
+          <div>
+            <span class="text-xs font-mono text-emerald-700 dark:text-limeAccent font-semibold">SECTION 2.2 • PAGES 91–97</span>
+            <h3 class="text-lg sm:text-xl font-bold mt-0.5">Switching Law (Commutation Law)</h3>
+          </div>
+          <label class="flex items-center gap-2 text-xs font-mono cursor-pointer select-none">
+            <input type="checkbox" class="mastery-chk w-4 h-4 accent-limeAccent rounded" data-id="r-2-2" />
+            <span>Mastered</span>
+          </label>
+        </div>
+
+        <!-- Time Notation & Two Switching Laws -->
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-4">
+          <div class="p-4 rounded-xl border border-zinc-200 dark:border-zinc-800 bg-zinc-50 dark:bg-obsidian/60 space-y-1.5 text-xs sm:text-sm">
+            <div class="text-xs font-mono font-bold text-emerald-700 dark:text-limeAccent">TIME INSTANT NOTATION</div>
+            <div>• <strong>$t = 0$:</strong> Exact instant of switching.</div>
+            <div>• <strong>$t = 0_-$:</strong> Moment immediately <em>before</em> switching (evaluated from pre-switching DC steady state: <strong>$C$ = open circuit</strong>, <strong>$L$ = short circuit</strong>).</div>
+            <div>• <strong>$t = 0_+$:</strong> Moment immediately <em>after</em> switching.</div>
+          </div>
+
+          <div class="p-4 rounded-xl border-2 border-emerald-600/40 dark:border-limeAccent/40 bg-zinc-50 dark:bg-obsidian/60 flex flex-col justify-between">
+            <div>
+              <div class="text-xs font-mono font-bold text-emerald-700 dark:text-limeAccent">LAW 1: CAPACITOR SWITCHING LAW</div>
+              <p class="text-xs mt-1">Voltage across a capacitor cannot change abruptly at the moment of switching:</p>
+            </div>
+            <div class="mt-2 p-2.5 rounded-lg bg-white dark:bg-surface font-mono text-sm font-bold text-center">
+              $$u_C(0_+) = u_C(0_-)$$
+            </div>
+          </div>
+
+          <div class="p-4 rounded-xl border-2 border-emerald-600/40 dark:border-limeAccent/40 bg-zinc-50 dark:bg-obsidian/60 flex flex-col justify-between">
+            <div>
+              <div class="text-xs font-mono font-bold text-emerald-700 dark:text-limeAccent">LAW 2: INDUCTOR SWITCHING LAW</div>
+              <p class="text-xs mt-1">Current through an inductor cannot change abruptly at the moment of switching:</p>
+            </div>
+            <div class="mt-2 p-2.5 rounded-lg bg-white dark:bg-surface font-mono text-sm font-bold text-center">
+              $$i_L(0_+) = i_L(0_-)$$
+            </div>
+          </div>
+        </div>
+
+        <!-- Critical Notice & Worked Examples E1-E3 -->
+        <div class="p-4 rounded-xl border border-amber-400/50 bg-amber-50/70 dark:bg-amber-950/20 text-xs sm:text-sm">
+          <strong>CRITICAL NOTICE (PAGE 94):</strong> "Not to change abruptly" does <strong>NOT</strong> mean "not to change at all" — it means $u_C(t)$ and $i_L(t)$ vary <em>continuously</em> across $t=0$. By contrast, <strong>non-state variables</strong> such as capacitor current $i_C$, inductor voltage $u_L$, and resistor voltages/currents ($u_R, i_R$) <strong>CAN jump abruptly</strong> at $t = 0_+$!
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-3 text-xs font-mono">
+          <div class="p-3 rounded-xl bg-zinc-50 dark:bg-obsidian/60 border border-zinc-200 dark:border-zinc-800">
+            <div class="font-bold text-emerald-700 dark:text-limeAccent">Worked Ex 2.2-1 (Page 95)</div>
+            <p class="mt-1 font-sans">DC steady-state circuit ($6\text{V}$ source, three $2\Omega$ resistors, $C$, $L$):</p>
+            <div class="mt-1">In steady state, $C$ is open ($I_3 = 0\text{A}$), $L$ is shorted ($U_L = 0\text{V}$), total $I = 2\text{A}$, $I_1 = 1\text{A}$, $I_2 = 1\text{A}$, $U_C = 2\text{V}$.</div>
+          </div>
+          <div class="p-3 rounded-xl bg-zinc-50 dark:bg-obsidian/60 border border-zinc-200 dark:border-zinc-800">
+            <div class="font-bold text-emerald-700 dark:text-limeAccent">Worked Ex 2.2-2 (Page 96)</div>
+            <p class="mt-1 font-sans">Switch thrown from position A to B at $t=0$:</p>
+            <div class="mt-1">Only $u_C$ and $i_L$ remain unchanged at $t=0_+$ ($u_C(0_+)=u_C(0_-)$, $i_L(0_+)=i_L(0_-)$); $i, i_1, i_2, u_L$ can jump abruptly.</div>
+          </div>
+          <div class="p-3 rounded-xl bg-zinc-50 dark:bg-obsidian/60 border border-zinc-200 dark:border-zinc-800">
+            <div class="font-bold text-emerald-700 dark:text-limeAccent">Worked Ex 2.2-3 (Page 97)</div>
+            <p class="mt-1 font-sans">Switch closed at $t=0$:</p>
+            <div class="mt-1">Only $u_C$ and $i_L$ remain continuous at $t=0_+$; branch currents $i, i_1, i_2, i_3$ and inductor voltage $u_L$ jump abruptly.</div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ===================================================================== -->
+      <!-- SECTION 2.3: THREE-ELEMENT METHOD FOR FIRST-ORDER CIRCUITS -->
+      <!-- ===================================================================== -->
+      <section id="sec-2-3" class="content-card p-5 sm:p-6 rounded-2xl border border-zinc-300 dark:border-zinc-800 bg-white dark:bg-surface space-y-5" data-chapter="ch2" data-tags="ch2 law formula notice example">
+        <div class="flex items-start justify-between gap-3 border-b border-zinc-200 dark:border-zinc-800 pb-3">
+          <div>
+            <span class="text-xs font-mono text-emerald-700 dark:text-limeAccent font-semibold">SECTION 2.3 • PAGES 98–100</span>
+            <h3 class="text-lg sm:text-xl font-bold mt-0.5">Three-Element Method &amp; First-Order ODE Derivations</h3>
+          </div>
+          <label class="flex items-center gap-2 text-xs font-mono cursor-pointer select-none">
+            <input type="checkbox" class="mastery-chk w-4 h-4 accent-limeAccent rounded" data-id="r-2-3" />
+            <span>Mastered</span>
+          </label>
+        </div>
+
+        <!-- Master Formula Box -->
+        <div class="p-4 sm:p-5 rounded-xl border-2 border-emerald-600/50 dark:border-limeAccent/60 bg-zinc-50 dark:bg-obsidian space-y-3">
+          <div class="text-xs font-mono font-bold uppercase text-emerald-700 dark:text-limeAccent">
+            UNIVERSAL THREE-ELEMENT FORMULA (VALID FOR ANY VOLTAGE OR CURRENT $f(t)$, $t \ge 0_+$)
+          </div>
+          <div class="p-3 rounded-xl bg-white dark:bg-surface border border-zinc-200 dark:border-zinc-800 font-mono text-base sm:text-lg text-center font-bold">
+            $$f(t) = f(\infty) + \left[f(0_+) - f(\infty)\right] e^{-\frac{t}{\tau}} \quad (t \ge 0_+)$$
+          </div>
+          <div class="grid grid-cols-1 md:grid-cols-3 gap-3 text-xs">
+            <div class="p-3 rounded-lg bg-white dark:bg-surface border border-zinc-200 dark:border-zinc-700">
+              <div class="font-mono font-bold text-emerald-700 dark:text-limeAccent">1. Initial Value $f(0_+)$</div>
+              <p class="mt-1">Find $u_C(0_-)$ or $i_L(0_-)$ at $t=0_-$. By Switching Law, $u_C(0_+)=u_C(0_-)$ and $i_L(0_+)=i_L(0_-)$. Replace $C$ with a voltage source $u_C(0_+)$ (or $L$ with a current source $i_L(0_+)$) in the $t=0_+$ circuit to solve for any desired $f(0_+)$.</p>
+            </div>
+            <div class="p-3 rounded-lg bg-white dark:bg-surface border border-zinc-200 dark:border-zinc-700">
+              <div class="font-mono font-bold text-emerald-700 dark:text-limeAccent">2. Steady-State Value $f(\infty)$</div>
+              <p class="mt-1">Evaluate the post-switching circuit as $t \to \infty$ (new DC steady state): treat <strong>capacitor $C$ as an open circuit</strong> and <strong>inductor $L$ as a short circuit</strong>.</p>
+            </div>
+            <div class="p-3 rounded-lg bg-white dark:bg-surface border border-zinc-200 dark:border-zinc-700">
+              <div class="font-mono font-bold text-emerald-700 dark:text-limeAccent">3. Time Constant $\tau$ (seconds)</div>
+              <p class="mt-1">Find the Thévenin equivalent resistance $R_0$ looking into the terminals of $C$ or $L$ in the <strong>post-switching</strong> passive network (with all independent sources deactivated):</p>
+              <div class="font-mono font-bold mt-1">• RC Circuit: $\tau = R_0 C$<br/>• RL Circuit: $\tau = \dfrac{L}{R_0}$</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Classical ODE Derivations (Pages 99-100) -->
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-xs">
+          <div class="p-4 rounded-xl border border-zinc-200 dark:border-zinc-800 bg-zinc-50 dark:bg-obsidian/60 space-y-1.5">
+            <div class="font-mono font-bold text-emerald-700 dark:text-limeAccent">RC CHARGING ODE DERIVATION (PAGE 99)</div>
+            <div class="font-mono bg-white dark:bg-surface p-3 rounded-lg border border-zinc-200 dark:border-zinc-700 space-y-1">
+              <div>$U = R i + u_C = RC \dfrac{du_C}{dt} + u_C$</div>
+              <div>With $u_C(0_+) = U_0$, $u_C(\infty) = U$, $\tau = RC$:</div>
+              <div class="font-bold">$$u_C(t) = U + (U_0 - U) e^{-\frac{t}{RC}}$$</div>
+            </div>
+          </div>
+          <div class="p-4 rounded-xl border border-zinc-200 dark:border-zinc-800 bg-zinc-50 dark:bg-obsidian/60 space-y-1.5">
+            <div class="font-mono font-bold text-emerald-700 dark:text-limeAccent">RL ENERGIZING ODE DERIVATION (PAGE 100)</div>
+            <div class="font-mono bg-white dark:bg-surface p-3 rounded-lg border border-zinc-200 dark:border-zinc-700 space-y-1">
+              <div>$U = R i_L + u_L = R i_L + L \dfrac{di_L}{dt}$</div>
+              <div>With $i_L(0_+) = I_0$, $i_L(\infty) = \dfrac{U}{R}$, $\tau = \dfrac{L}{R}$:</div>
+              <div class="font-bold">$$i_L(t) = \frac{U}{R} + \left(I_0 - \frac{U}{R}\right) e^{-\frac{t}{\tau}}$$</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- INTERACTIVE SIMULATOR 3: First-Order Three-Element Transient Plotter -->
+        <div id="sim-transient" class="p-4 sm:p-5 rounded-xl border-2 border-emerald-600/40 dark:border-limeAccent/40 bg-zinc-100/80 dark:bg-obsidian space-y-4">
+          <div class="flex flex-wrap items-center justify-between gap-2">
+            <div>
+              <span class="px-2 py-0.5 rounded bg-obsidian text-limeAccent dark:bg-limeAccent dark:text-obsidian font-mono text-[10px] font-bold">INTERACTIVE TRANSIENT PLOTTER</span>
+              <h4 class="font-bold text-sm sm:text-base mt-1">First-Order Response $f(t) = f(\infty) + [f(0_+) - f(\infty)]e^{-t/\tau}$</h4>
+            </div>
+            <div class="flex gap-1.5 font-mono text-xs">
+              <button onclick="setTransientPreset('rc_charge')" class="px-2.5 py-1 rounded-lg bg-zinc-300 dark:bg-zinc-800 hover:border-limeAccent border border-transparent">RC Charge ($0\to 10\text{V}$)</button>
+              <button onclick="setTransientPreset('rc_discharge')" class="px-2.5 py-1 rounded-lg bg-zinc-300 dark:bg-zinc-800 hover:border-limeAccent border border-transparent">RC Discharge ($12\to 0\text{V}$)</button>
+              <button onclick="setTransientPreset('rl_step')" class="px-2.5 py-1 rounded-lg bg-zinc-300 dark:bg-zinc-800 hover:border-limeAccent border border-transparent">RL Step ($1\to 5\text{A}$)</button>
+            </div>
+          </div>
+
+          <div class="grid grid-cols-1 lg:grid-cols-3 gap-4 items-center font-mono text-xs">
+            <div class="space-y-2.5">
+              <label class="block">
+                <span class="text-zinc-500">Initial Value $f(0_+)$:</span>
+                <input type="number" id="trF0" value="0" step="0.5" oninput="drawTransientCurve()" class="mt-1 w-full px-3 py-1.5 rounded-lg border border-zinc-300 dark:border-zinc-700 bg-white dark:bg-surface" />
+              </label>
+              <label class="block">
+                <span class="text-zinc-500">Steady-State Value $f(\infty)$:</span>
+                <input type="number" id="trFinf" value="10" step="0.5" oninput="drawTransientCurve()" class="mt-1 w-full px-3 py-1.5 rounded-lg border border-zinc-300 dark:border-zinc-700 bg-white dark:bg-surface" />
+              </label>
+              <label class="block">
+                <span class="text-zinc-500">Time Constant $\tau$ (seconds):</span>
+                <input type="number" id="trTau" value="1.0" min="0.05" step="0.1" oninput="drawTransientCurve()" class="mt-1 w-full px-3 py-1.5 rounded-lg border border-zinc-300 dark:border-zinc-700 bg-white dark:bg-surface" />
+              </label>
+              <div id="trFormulaText" class="p-2.5 rounded-lg bg-white dark:bg-surface border border-zinc-200 dark:border-zinc-800 text-[11px]">
+                $f(t) = 10 - 10 e^{-t / 1.0}$
+              </div>
+            </div>
+
+            <!-- Interactive SVG Waveform -->
+            <div class="lg:col-span-2 bg-white dark:bg-surface p-3 rounded-xl border border-zinc-200 dark:border-zinc-800">
+              <svg id="transientSvg" class="schematic-svg w-full h-56" viewBox="0 0 460 210"></svg>
+              <div class="grid grid-cols-3 gap-2 text-center text-[11px] pt-2 border-t border-zinc-200 dark:border-zinc-800">
+                <div><strong>At $t = 1\tau$:</strong> <span id="trVal1Tau" class="text-emerald-700 dark:text-limeAccent font-bold">6.32</span> (63.2% step)</div>
+                <div><strong>At $t = 3\tau$:</strong> <span id="trVal3Tau" class="text-emerald-700 dark:text-limeAccent font-bold">9.50</span> (95.0% step)</div>
+                <div><strong>At $t = 5\tau$:</strong> <span id="trVal5Tau" class="text-emerald-700 dark:text-limeAccent font-bold">9.93</span> (99.3% steady)</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Footer -->
+      <footer class="py-6 text-center text-xs font-mono text-zinc-500 dark:text-zinc-400 border-t border-zinc-200 dark:border-zinc-800">
+        Circuits Analysis Complete Reference (Chapters 1 &amp; 2, Pages 1–100) • Built for High-Contrast Study &amp; Exam Preparation
+      </footer>
+
+    </main>
+  </div>
+
+  <!-- Vanilla JavaScript Application Logic -->
+  <script>
+    // =========================================================================
+    // 1. DARK / LIGHT THEME TOGGLE
+    // =========================================================================
+    const htmlEl = document.documentElement;
+    const themeToggleBtn = document.getElementById('themeToggleBtn');
+    const savedTheme = localStorage.getItem('circuits_theme');
+    if (savedTheme === 'light') {
+      htmlEl.classList.remove('dark');
+    } else {
+      htmlEl.classList.add('dark');
+    }
+
+    themeToggleBtn.addEventListener('click', () => {
+      htmlEl.classList.toggle('dark');
+      localStorage.setItem('circuits_theme', htmlEl.classList.contains('dark') ? 'dark' : 'light');
+      drawTransientCurve();
+    });
+
+    // =========================================================================
+    // 2. MOBILE SIDEBAR TOGGLE
+    // =========================================================================
+    const sidebarNav = document.getElementById('sidebarNav');
+    document.getElementById('sidebarToggleBtn').addEventListener('click', () => {
+      sidebarNav.classList.remove('-translate-x-full');
+    });
+    document.getElementById('closeSidebarBtn').addEventListener('click', () => {
+      sidebarNav.classList.add('-translate-x-full');
+    });
+    document.querySelectorAll('.nav-link').forEach(link => {
+      link.addEventListener('click', () => {
+        if (window.innerWidth < 1024) {
+          sidebarNav.classList.add('-translate-x-full');
+        }
+      });
+    });
+
+    // =========================================================================
+    // 3. LIVE SEARCH & CATEGORY FILTERING
+    // =========================================================================
+    const searchInput = document.getElementById('searchInput');
+    const mobileSearchInput = document.getElementById('mobileSearchInput');
+    const clearSearchBtn = document.getElementById('clearSearchBtn');
+    const filterBtns = document.querySelectorAll('.filter-btn');
+    const contentCards = document.querySelectorAll('.content-card');
+    const visibleCountEl = document.getElementById('visibleCount');
+
+    let activeFilter = 'all';
+    let searchQuery = '';
+
+    function applyFilters() {
+      let shown = 0;
+      const q = searchQuery.trim().toLowerCase();
+
+      contentCards.forEach(card => {
+        const tags = (card.dataset.tags || '').toLowerCase();
+        const text = card.textContent.toLowerCase();
+
+        const matchesTag = activeFilter === 'all' || tags.includes(activeFilter);
+        const matchesQuery = !q || text.includes(q);
+
+        if (matchesTag && matchesQuery) {
+          card.classList.remove('card-hidden');
+          shown++;
+        } else {
+          card.classList.add('card-hidden');
+        }
+      });
+
+      visibleCountEl.textContent = `${shown} / ${contentCards.length}`;
+      if (q) {
+        clearSearchBtn.classList.remove('hidden');
+      } else {
+        clearSearchBtn.classList.add('hidden');
+      }
+    }
+
+    searchInput.addEventListener('input', e => {
+      searchQuery = e.target.value;
+      mobileSearchInput.value = searchQuery;
+      applyFilters();
+    });
+
+    mobileSearchInput.addEventListener('input', e => {
+      searchQuery = e.target.value;
+      searchInput.value = searchQuery;
+      applyFilters();
+    });
+
+    clearSearchBtn.addEventListener('click', () => {
+      searchQuery = '';
+      searchInput.value = '';
+      mobileSearchInput.value = '';
+      applyFilters();
+    });
+
+    document.addEventListener('keydown', e => {
+      if (e.key === 'Escape' && searchQuery) {
+        searchQuery = '';
+        searchInput.value = '';
+        mobileSearchInput.value = '';
+        applyFilters();
+      }
+    });
+
+    filterBtns.forEach(btn => {
+      btn.addEventListener('click', () => {
+        filterBtns.forEach(b => {
+          b.classList.remove('active', 'bg-obsidian', 'text-limeAccent', 'dark:bg-limeAccent', 'dark:text-obsidian', 'font-semibold');
+          b.classList.add('bg-zinc-200', 'dark:bg-zinc-800', 'font-medium');
+        });
+        btn.classList.add('active', 'bg-obsidian', 'text-limeAccent', 'dark:bg-limeAccent', 'dark:text-obsidian', 'font-semibold');
+        btn.classList.remove('bg-zinc-200', 'dark:bg-zinc-800', 'font-medium');
+        activeFilter = btn.dataset.filter;
+        applyFilters();
+      });
+    });
+
+    // =========================================================================
+    // 4. MASTERY CHECKLIST PERSISTENCE (localStorage)
+    // =========================================================================
+    const masteryCheckboxes = document.querySelectorAll('.mastery-chk');
+    const masteryBadge = document.getElementById('masteryBadge');
+
+    function updateMasteryUI() {
+      let checkedCount = 0;
+      masteryCheckboxes.forEach(cb => {
+        if (cb.checked) checkedCount++;
+      });
+      masteryBadge.textContent = `${checkedCount} / ${masteryCheckboxes.length}`;
+    }
+
+    masteryCheckboxes.forEach(cb => {
+      const saved = localStorage.getItem('circuits_mastery_' + cb.dataset.id);
+      if (saved === 'true') cb.checked = true;
+      cb.addEventListener('change', () => {
+        localStorage.setItem('circuits_mastery_' + cb.dataset.id, cb.checked);
+        updateMasteryUI();
+      });
+    });
+
+    document.getElementById('resetProgressBtn').addEventListener('click', () => {
+      masteryCheckboxes.forEach(cb => {
+        cb.checked = false;
+        localStorage.removeItem('circuits_mastery_' + cb.dataset.id);
+      });
+      updateMasteryUI();
+    });
+    updateMasteryUI();
+
+    // =========================================================================
+    // 5. SIMULATOR 1: PRACTICAL SOURCE OPERATING STATES (CLOSED / OPEN / SHORT)
+    // =========================================================================
+    let circuitStateMode = 'closed';
+
+    function setCircuitStateMode(mode) {
+      circuitStateMode = mode;
+      ['closed', 'open', 'short'].forEach(m => {
+        const btn = document.getElementById('btnState' + m.charAt(0).toUpperCase() + m.slice(1));
+        if (m === mode) {
+          btn.className = 'px-2.5 py-1 rounded-lg bg-obsidian text-limeAccent dark:bg-limeAccent dark:text-obsidian font-bold';
+        } else {
+          btn.className = 'px-2.5 py-1 rounded-lg bg-zinc-300 dark:bg-zinc-800';
+        }
+      });
+
+      const loadSliderGroup = document.getElementById('loadSliderGroup');
+      const svgSwitchLine = document.getElementById('svgSwitchLine');
+      const svgLoadBox = document.getElementById('svgLoadBox');
+      const svgShortWire = document.getElementById('svgShortWire');
+
+      if (mode === 'open') {
+        loadSliderGroup.classList.add('opacity-40', 'pointer-events-none');
+        svgSwitchLine.setAttribute('x2', '182');
+        svgSwitchLine.setAttribute('y2', '18');
+        svgLoadBox.classList.remove('hidden');
+        svgShortWire.classList.add('hidden');
+      } else if (mode === 'short') {
+        loadSliderGroup.classList.add('opacity-40', 'pointer-events-none');
+        svgSwitchLine.setAttribute('x2', '185');
+        svgSwitchLine.setAttribute('y2', '32');
+        svgLoadBox.classList.add('hidden');
+        svgShortWire.classList.remove('hidden');
+      } else {
+        loadSliderGroup.classList.remove('opacity-40', 'pointer-events-none');
+        svgSwitchLine.setAttribute('x2', '185');
+        svgSwitchLine.setAttribute('y2', '32');
+        svgLoadBox.classList.remove('hidden');
+        svgShortWire.classList.add('hidden');
+      }
+
+      updateSourceSim();
+    }
+
+    function updateSourceSim() {
+      const Us = parseFloat(document.getElementById('rngUs').value);
+      const R0 = parseFloat(document.getElementById('rngR0').value);
+      const RL = parseFloat(document.getElementById('rngRL').value);
+
+      document.getElementById('lblUs').textContent = `${Us.toFixed(0)} V`;
+      document.getElementById('lblR0').textContent = `${R0.toFixed(1)} Ω`;
+      document.getElementById('lblRL').textContent = `${RL.toFixed(2)} Ω`;
+      document.getElementById('svgUsTxt').textContent = `${Us.toFixed(0)}V`;
+      document.getElementById('svgR0Txt').textContent = `R0=${R0.toFixed(1)}Ω`;
+
+      let I = 0, U = 0, Ps = 0, Pl = 0, dP = 0;
+
+      if (circuitStateMode === 'open') {
+        I = 0;
+        U = Us;
+        Ps = 0;
+        Pl = 0;
+        dP = 0;
+        document.getElementById('svgRLTxt').textContent = 'OPEN';
+      } else if (circuitStateMode === 'short') {
+        I = Us / R0;
+        U = 0;
+        Ps = Us * I;
+        Pl = 0;
+        dP = Ps;
+        document.getElementById('svgRLTxt').textContent = 'SHORT';
+      } else {
+        I = Us / (R0 + RL);
+        U = I * RL;
+        Ps = Us * I;
+        Pl = U * I;
+        dP = I * I * R0;
+        document.getElementById('svgRLTxt').textContent = `${RL.toFixed(1)}Ω`;
+      }
+
+      document.getElementById('svgITxt').textContent = `I = ${I.toFixed(2)} A`;
+      document.getElementById('outI').textContent = `${I.toFixed(2)} A`;
+      document.getElementById('outU').textContent = `${U.toFixed(2)} V`;
+      document.getElementById('outPs').textContent = `${Ps.toFixed(1)} W`;
+      document.getElementById('outPl').textContent = `${Pl.toFixed(1)}W / ${dP.toFixed(1)}W`;
+    }
+    updateSourceSim();
+
+    // =========================================================================
+    // 6. SIMULATOR 2: SOURCE TRANSFORMATION CONVERTER
+    // =========================================================================
+    let stMode = 'v2i';
+
+    function setStMode(mode) {
+      stMode = mode;
+      const btnV2I = document.getElementById('btnStV2I');
+      const btnI2V = document.getElementById('btnStI2V');
+      const lbl = document.getElementById('stInputLabel');
+
+      if (mode === 'v2i') {
+        btnV2I.className = 'px-2.5 py-1 rounded-lg bg-obsidian text-limeAccent dark:bg-limeAccent dark:text-obsidian font-bold';
+        btnI2V.className = 'px-2.5 py-1 rounded-lg bg-zinc-300 dark:bg-zinc-800';
+        lbl.textContent = 'Input Voltage Source U_S (V):';
+      } else {
+        btnI2V.className = 'px-2.5 py-1 rounded-lg bg-obsidian text-limeAccent dark:bg-limeAccent dark:text-obsidian font-bold';
+        btnV2I.className = 'px-2.5 py-1 rounded-lg bg-zinc-300 dark:bg-zinc-800';
+        lbl.textContent = 'Input Current Source I_S (A):';
+      }
+      calcST();
+    }
+
+    function calcST() {
+      const val = parseFloat(document.getElementById('stInputVal').value) || 0;
+      const R = Math.max(0.01, parseFloat(document.getElementById('stResVal').value) || 1);
+      const RL = Math.max(0, parseFloat(document.getElementById('stLoadVal').value) || 0);
+
+      const titleEl = document.getElementById('stResultTitle');
+      const eqEl = document.getElementById('stResultEq');
+      const extEl = document.getElementById('stExternalCheck');
+
+      let Us = 0, Is = 0;
+      if (stMode === 'v2i') {
+        Us = val;
+        Is = Us / R;
+        titleEl.textContent = 'Equivalent Practical Current Source:';
+        eqEl.innerHTML = `I<sub>S</sub> = U<sub>S</sub> / R = ${Us.toFixed(2)} / ${R.toFixed(2)} = <strong>${Is.toFixed(3)} A</strong> in parallel with R' = <strong>${R.toFixed(2)} &Omega;</strong>`;
+      } else {
+        Is = val;
+        Us = Is * R;
+        titleEl.textContent = 'Equivalent Practical Voltage Source:';
+        eqEl.innerHTML = `U<sub>S</sub> = I<sub>S</sub> &times; R = ${Is.toFixed(2)} &times; ${R.toFixed(2)} = <strong>${Us.toFixed(3)} V</strong> in series with R' = <strong>${R.toFixed(2)} &Omega;</strong>`;
+      }
+
+      const IL = Us / (R + RL);
+      const UL = IL * RL;
+      extEl.innerHTML = `External Load Verification (R<sub>L</sub> = ${RL.toFixed(2)} &Omega;): Load Current I<sub>L</sub> = <strong>${IL.toFixed(3)} A</strong>, Load Voltage U<sub>L</sub> = <strong>${UL.toFixed(3)} V</strong> (Identical in both models!)`;
+    }
+    calcST();
+
+    // =========================================================================
+    // 7. SIMULATOR 3: THREE-ELEMENT TRANSIENT RESPONSE PLOTTER
+    // =========================================================================
+    function setTransientPreset(preset) {
+      if (preset === 'rc_charge') {
+        document.getElementById('trF0').value = 0;
+        document.getElementById('trFinf').value = 10;
+        document.getElementById('trTau').value = 1.0;
+      } else if (preset === 'rc_discharge') {
+        document.getElementById('trF0').value = 12;
+        document.getElementById('trFinf').value = 0;
+        document.getElementById('trTau').value = 0.5;
+      } else if (preset === 'rl_step') {
+        document.getElementById('trF0').value = 1;
+        document.getElementById('trFinf').value = 5;
+        document.getElementById('trTau').value = 0.2;
+      }
+      drawTransientCurve();
+    }
+
+    function drawTransientCurve() {
+      const f0 = parseFloat(document.getElementById('trF0').value) || 0;
+      const finf = parseFloat(document.getElementById('trFinf').value) || 0;
+      const tau = Math.max(0.01, parseFloat(document.getElementById('trTau').value) || 1);
+
+      const diff = f0 - finf;
+      const signStr = diff >= 0 ? `+ ${diff.toFixed(2)}` : `- ${Math.abs(diff).toFixed(2)}`;
+      document.getElementById('trFormulaText').textContent = `f(t) = ${finf.toFixed(2)} ${signStr} · exp(-t / ${tau.toFixed(2)})`;
+
+      const f1 = finf + diff * Math.exp(-1);
+      const f3 = finf + diff * Math.exp(-3);
+      const f5 = finf + diff * Math.exp(-5);
+
+      document.getElementById('trVal1Tau').textContent = f1.toFixed(2);
+      document.getElementById('trVal3Tau').textContent = f3.toFixed(2);
+      document.getElementById('trVal5Tau').textContent = f5.toFixed(2);
+
+      const svg = document.getElementById('transientSvg');
+      const W = 460, H = 210;
+      const padL = 48, padR = 20, padT = 20, padB = 30;
+      const plotW = W - padL - padR;
+      const plotH = H - padT - padB;
+
+      const minVal = Math.min(f0, finf, 0);
+      const maxVal = Math.max(f0, finf, 1);
+      const span = Math.max(0.5, maxVal - minVal);
+      const yMin = minVal - span * 0.12;
+      const yMax = maxVal + span * 0.12;
+
+      const tMax = 5.5 * tau;
+      const mapX = t => padL + (t / tMax) * plotW;
+      const mapY = val => padT + plotH - ((val - yMin) / (yMax - yMin)) * plotH;
+
+      const isDark = htmlEl.classList.contains('dark');
+      const axisColor = isDark ? '#52525B' : '#A1A1AA';
+      const curveColor = isDark ? '#D7FF00' : '#15803D';
+      const textColor = isDark ? '#E4E4E7' : '#18181B';
+      const guideColor = isDark ? '#3F3F46' : '#D4D4D8';
+
+      let pathD = '';
+      const steps = 120;
+      for (let i = 0; i <= steps; i++) {
+        const t = (i / steps) * tMax;
+        const val = finf + diff * Math.exp(-t / tau);
+        const x = mapX(t).toFixed(1);
+        const y = mapY(val).toFixed(1);
+        pathD += (i === 0 ? `M ${x} ${y}` : ` L ${x} ${y}`);
+      }
+
+      const yZero = mapY(0).toFixed(1);
+      const yInf = mapY(finf).toFixed(1);
+      const y0 = mapY(f0).toFixed(1);
+      const x1Tau = mapX(tau).toFixed(1);
+      const y1Tau = mapY(f1).toFixed(1);
+      const x5Tau = mapX(5 * tau).toFixed(1);
+
+      svg.innerHTML = `
+        <!-- Grid / Steady-State Asymptote -->
+        <line x1="${padL}" y1="${yInf}" x2="${W - padR}" y2="${yInf}" stroke="${guideColor}" stroke-dasharray="5 4" stroke-width="1.2"/>
+        <text x="${W - padR - 4}" y="${yInf - 5}" text-anchor="end" font-size="9" fill="${textColor}">f(∞) = ${finf.toFixed(1)}</text>
+
+        <!-- 1 Tau Vertical Guide -->
+        <line x1="${x1Tau}" y1="${padT}" x2="${x1Tau}" y2="${H - padB}" stroke="${guideColor}" stroke-dasharray="3 3" stroke-width="1"/>
+        <text x="${x1Tau}" y="${H - 10}" text-anchor="middle" font-size="9" fill="${textColor}">1τ (${tau.toFixed(2)}s)</text>
+
+        <!-- 5 Tau Vertical Guide -->
+        <line x1="${x5Tau}" y1="${padT}" x2="${x5Tau}" y2="${H - padB}" stroke="${guideColor}" stroke-dasharray="3 3" stroke-width="1"/>
+        <text x="${x5Tau}" y="${H - 10}" text-anchor="middle" font-size="9" fill="${textColor}">5τ</text>
+
+        <!-- Axes -->
+        <line x1="${padL}" y1="${padT}" x2="${padL}" y2="${H - padB}" stroke="${axisColor}" stroke-width="1.5"/>
+        <line x1="${padL}" y1="${yZero}" x2="${W - padR}" y2="${yZero}" stroke="${axisColor}" stroke-width="1.5"/>
+        <text x="${padL - 6}" y="${y0}" text-anchor="end" dominant-baseline="middle" font-size="9" fill="${textColor}">f(0+)=${f0.toFixed(1)}</text>
+        <text x="${padL - 6}" y="${yZero}" text-anchor="end" dominant-baseline="middle" font-size="9" fill="${textColor}">0</text>
+        <text x="${W - padR}" y="${yZero - 5}" text-anchor="end" font-size="9" fill="${textColor}">t (s)</text>
+
+        <!-- Exponential Curve -->
+        <path d="${pathD}" fill="none" stroke="${curveColor}" stroke-width="2.6" stroke-linecap="round"/>
+
+        <!-- Key Markers -->
+        <circle cx="${padL}" cy="${y0}" r="4" fill="${curveColor}"/>
+        <circle cx="${x1Tau}" cy="${y1Tau}" r="4" fill="${curveColor}"/>
+      `;
+    }
+    drawTransientCurve();
+    applyFilters();
+  </script>
+</body>
+</html>
